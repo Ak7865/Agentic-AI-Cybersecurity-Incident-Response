@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const {
   generateAttackTelemetry,
@@ -51,7 +53,31 @@ app.use(express.json());
 |--------------------------------------------------------------------------
 */
 
-const incidents = [];
+const DATA_DIR = path.join(__dirname, "../data");
+const INCIDENTS_FILE = path.join(DATA_DIR, "incidents.json");
+
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+let incidents = [];
+try {
+  if (fs.existsSync(INCIDENTS_FILE)) {
+    const data = fs.readFileSync(INCIDENTS_FILE, "utf-8");
+    incidents = JSON.parse(data);
+    console.log(`[Persistence] Loaded ${incidents.length} incidents from disk`);
+  }
+} catch (error) {
+  console.error("[Persistence] Error loading incidents:", error.message);
+}
+
+function saveIncidents() {
+  try {
+    fs.writeFileSync(INCIDENTS_FILE, JSON.stringify(incidents, null, 2), "utf-8");
+  } catch (error) {
+    console.error("[Persistence] Error saving incidents:", error.message);
+  }
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -553,6 +579,7 @@ app.post("/api/attack/simulate", async (req, res) => {
     */
 
     incidents.unshift(incident);
+    saveIncidents();
 
     /*
     |--------------------------------------------------------------------------
@@ -716,6 +743,8 @@ app.post(
     incident.state =
       "ACKNOWLEDGED";
 
+    saveIncidents();
+
     /*
     |--------------------------------------------------------------------------
     | Response
@@ -774,6 +803,7 @@ app.get(
 
     incident.triaged =
       true;
+    saveIncidents();
 
     /*
     |--------------------------------------------------------------------------
@@ -1328,6 +1358,7 @@ app.post(
 
       incident.fabric.lifecycleStatus =
         "PROPAGATED";
+      saveIncidents();
 
       /*
       |--------------------------------------------------------------------------

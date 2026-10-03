@@ -6,7 +6,8 @@ const OLLAMA_MODEL =
     process.env.OLLAMA_MODEL ||
     "qwen2.5:1.5b-instruct-q4_K_M";
 
-const OLLAMA_TIMEOUT_MS = 180000;
+const OLLAMA_TIMEOUT_MS =
+    parseInt(process.env.OLLAMA_TIMEOUT_MS, 10) || 180000;
 
 
 /*
