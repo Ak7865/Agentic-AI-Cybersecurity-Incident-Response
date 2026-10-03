@@ -7,7 +7,7 @@
     "tactic": "PowerShell",
     "asset": "SYSTEM-A",
     "observedAt": "2026-10-03T09:45:56.467Z",
-    "status": "Open",
+    "status": "Acknowledged",
     "attack": {
       "id": "5e7b5fb9-c06f-4481-8f0b-985a7b693326",
       "type": "Command and Scripting Interpreter",
@@ -122,8 +122,8 @@
       "lifecycleStatus": "PROPAGATED",
       "error": null
     },
-    "state": "OPEN",
-    "acknowledged": false,
+    "state": "ACKNOWLEDGED",
+    "acknowledged": true,
     "triaged": false,
     "timestamp": "2026-10-03T09:45:56.467Z",
     "propagation": {
@@ -146,7 +146,7 @@
     "tactic": "PowerShell",
     "asset": "SYSTEM-A",
     "observedAt": "2026-10-03T09:43:48.828Z",
-    "status": "Open",
+    "status": "Acknowledged",
     "attack": {
       "id": "21b7d33d-ccd2-4118-b22e-035b74136288",
       "type": "Command and Scripting Interpreter",
@@ -261,8 +261,8 @@
       "lifecycleStatus": "READY_FOR_PROPAGATION",
       "error": null
     },
-    "state": "OPEN",
-    "acknowledged": false,
+    "state": "ACKNOWLEDGED",
+    "acknowledged": true,
     "triaged": false,
     "timestamp": "2026-10-03T09:43:48.828Z"
   },
@@ -274,7 +274,7 @@
     "tactic": "PowerShell",
     "asset": "SYSTEM-A",
     "observedAt": "2026-10-03T09:40:35.004Z",
-    "status": "Open",
+    "status": "Acknowledged",
     "attack": {
       "id": "cb2d4cb3-ccfe-4372-8c7d-a17dbfd27bec",
       "type": "Command and Scripting Interpreter",
@@ -391,8 +391,8 @@
       "lifecycleStatus": null,
       "error": null
     },
-    "state": "OPEN",
-    "acknowledged": false,
+    "state": "ACKNOWLEDGED",
+    "acknowledged": true,
     "triaged": false,
     "timestamp": "2026-10-03T09:40:35.004Z"
   },
