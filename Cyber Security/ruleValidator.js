@@ -65,6 +65,7 @@ const TECHNIQUE_RULES = {
       "parentProcess",
       "commandLine",
       "processChainLengthThreshold",
+      "processChain",
     ],
   },
 };

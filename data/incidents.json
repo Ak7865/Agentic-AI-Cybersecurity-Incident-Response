@@ -1,5 +1,269 @@
 [
   {
+    "id": "INC-1791020293775",
+    "title": "Command and Scripting Interpreter",
+    "source": "192.168.1.80",
+    "severity": "High",
+    "tactic": "PowerShell",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T09:38:13.775Z",
+    "status": "Open",
+    "attack": {
+      "id": "528764a0-811f-47a1-8afe-10b2273f9b9d",
+      "type": "Command and Scripting Interpreter",
+      "technique": {
+        "id": "T1059.001",
+        "name": "PowerShell"
+      },
+      "sourceIp": "192.168.1.80",
+      "targetSystem": "SYSTEM-A",
+      "events": [
+        {
+          "eventId": "e19f2969-43e8-421b-8aaf-ea7460b850b9",
+          "timestamp": "2026-10-03T09:35:13.732Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "powershell.exe",
+          "parentProcess": "winword.exe",
+          "commandLine": "powershell -enc <redacted>"
+        },
+        {
+          "eventId": "c13ec255-83c3-4243-8e53-13f502ef2601",
+          "timestamp": "2026-10-03T09:35:13.732Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "cmd.exe",
+          "parentProcess": "powershell.exe",
+          "commandLine": "cmd.exe /c whoami"
+        },
+        {
+          "eventId": "baebb175-6840-4847-8bfb-e385b466bd3f",
+          "timestamp": "2026-10-03T09:35:13.732Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "net.exe",
+          "parentProcess": "cmd.exe",
+          "commandLine": "net user"
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.9,
+      "riskScore": 75,
+      "reason": "PowerShell execution from an unusual process chain is consistent with suspicious command and scripting activity.",
+      "evidence": [
+        "PowerShell process execution detected",
+        "PowerShell was spawned by Microsoft Word",
+        "powershell.exe spawned by winword.exe",
+        "cmd.exe spawned by powershell.exe",
+        "net.exe spawned by cmd.exe"
+      ],
+      "reasoning": [
+        "The evidence points to PowerShell being executed through a series of processes that are not typical for legitimate activities."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [],
+        "reason": "The proposed defense directly mitigates the detected behavior."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1059.001-1791020293775",
+      "ruleName": "Adaptive PowerShell Execution Protection",
+      "attack": {
+        "type": "Command and Scripting Interpreter",
+        "mitreTechnique": "T1059.001"
+      },
+      "type": "suspicious_process_chain_restriction",
+      "condition": {
+        "processChainLengthThreshold": 3,
+        "windowSeconds": 60
+      },
+      "action": {
+        "type": "temporary_execution_restriction",
+        "durationSeconds": 300
+      },
+      "explanation": "Restricts execution of PowerShell through an unusual process chain to prevent suspicious command and scripting activity.",
+      "severity": "HIGH",
+      "reason": "The observed evidence points to a series of processes executing PowerShell, which is consistent with suspicious command and scripting activity."
+    },
+    "validation": {
+      "passed": false,
+      "status": "REJECTED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": [
+        "Defense condition does not contain telemetry fields relevant to T1059.001."
+      ]
+    },
+    "fabric": {
+      "incidentId": "INC-1791020293775",
+      "recorded": false,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": null,
+      "validationStatus": "REJECTED",
+      "lifecycleStatus": null,
+      "error": null
+    },
+    "state": "OPEN",
+    "acknowledged": false,
+    "triaged": false,
+    "timestamp": "2026-10-03T09:38:13.775Z"
+  },
+  {
+    "id": "INC-1791020155980",
+    "title": "Command and Scripting Interpreter",
+    "source": "192.168.1.80",
+    "severity": "High",
+    "tactic": "PowerShell",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T09:35:55.980Z",
+    "status": "Open",
+    "attack": {
+      "id": "ad354021-1707-4ca5-ac23-a472c0d62efb",
+      "type": "Command and Scripting Interpreter",
+      "technique": {
+        "id": "T1059.001",
+        "name": "PowerShell"
+      },
+      "sourceIp": "192.168.1.80",
+      "targetSystem": "SYSTEM-A",
+      "events": [
+        {
+          "eventId": "c50507d2-f763-4edc-ac24-b4574c16ea53",
+          "timestamp": "2026-10-03T09:33:41.876Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "powershell.exe",
+          "parentProcess": "winword.exe",
+          "commandLine": "powershell -enc <redacted>"
+        },
+        {
+          "eventId": "5792b977-0620-4f91-b752-ad85a5f3a6f0",
+          "timestamp": "2026-10-03T09:33:41.876Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "cmd.exe",
+          "parentProcess": "powershell.exe",
+          "commandLine": "cmd.exe /c whoami"
+        },
+        {
+          "eventId": "b7bfe734-5a42-45c3-9ad1-b38fb04e8481",
+          "timestamp": "2026-10-03T09:33:41.876Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "net.exe",
+          "parentProcess": "cmd.exe",
+          "commandLine": "net user"
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.9,
+      "riskScore": 75,
+      "reason": "PowerShell execution from an unusual process chain is consistent with suspicious command and scripting activity.",
+      "evidence": [
+        "PowerShell process execution detected",
+        "PowerShell was spawned by Microsoft Word",
+        "powershell.exe spawned by winword.exe",
+        "cmd.exe spawned by powershell.exe",
+        "net.exe spawned by cmd.exe"
+      ],
+      "reasoning": [
+        "The evidence shows PowerShell being executed by various processes (cmd.exe, powershell.exe, net.exe) in a way that deviates from typical usage patterns."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [],
+        "reason": "The proposed defense directly mitigates the detected behavior."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1059.001-1791020155980",
+      "ruleName": "Adaptive PowerShell Execution Protection",
+      "attack": {
+        "type": "Command and Scripting Interpreter",
+        "mitreTechnique": "T1059.001"
+      },
+      "type": "suspicious_process_chain_restriction",
+      "condition": {
+        "processChain": [
+          "powershell.exe",
+          "winword.exe",
+          "cmd.exe",
+          "net.exe"
+        ]
+      },
+      "action": {
+        "type": "temporary_execution_restriction",
+        "durationSeconds": 300
+      },
+      "explanation": "Restricts execution of suspicious PowerShell process chain to mitigate command and scripting activity.",
+      "severity": "HIGH",
+      "reason": "The observed PowerShell execution by an unusual process chain is consistent with suspicious command and scripting activity."
+    },
+    "validation": {
+      "passed": false,
+      "status": "REJECTED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": [
+        "Defense condition does not contain telemetry fields relevant to T1059.001."
+      ]
+    },
+    "fabric": {
+      "incidentId": "INC-1791020155980",
+      "recorded": false,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": null,
+      "validationStatus": "REJECTED",
+      "lifecycleStatus": null,
+      "error": null
+    },
+    "state": "OPEN",
+    "acknowledged": false,
+    "triaged": false,
+    "timestamp": "2026-10-03T09:35:55.980Z"
+  },
+  {
     "id": "INC-1791019931918",
     "title": "Brute Force",
     "source": "192.168.1.50",
