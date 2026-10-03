@@ -4,7 +4,9 @@ import "./CmdSimulator.css";
 const API_URL = "http://localhost:5000/api";
 
 const attackScenarios = [
-  { value: "auth", label: "Authentication Brute Force", cmd: "auth" },
+  { value: "bruteforce", label: "Brute Force", cmd: "bruteforce" },
+  { value: "scan", label: "Network Service Scan", cmd: "scan" },
+  { value: "dos", label: "Denial of Service", cmd: "dos" },
   { value: "process", label: "Suspicious PowerShell Chain", cmd: "process" },
 ];
 
