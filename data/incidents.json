@@ -1,5 +1,1412 @@
 [
   {
+    "id": "INC-1791022590976",
+    "title": "Brute Force",
+    "source": "192.168.1.50",
+    "severity": "High",
+    "tactic": "Brute Force",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T10:16:30.976Z",
+    "status": "Open",
+    "attack": {
+      "id": "497b53cb-2563-464a-9954-22024ed99952",
+      "type": "Brute Force",
+      "technique": {
+        "id": "T1110",
+        "name": "Brute Force"
+      },
+      "sourceIp": "192.168.1.50",
+      "targetSystem": "SYSTEM-A",
+      "failedAttempts": 12,
+      "events": [
+        {
+          "eventId": "d88ca18e-a8ce-41ab-b6d8-4e461f8f3fc7",
+          "timestamp": "2026-10-03T10:14:00.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "4e787f78-1653-4acb-b993-8ce658cad8e6",
+          "timestamp": "2026-10-03T10:14:03.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "2467e60c-66b1-4505-9b81-9bff9ff2215c",
+          "timestamp": "2026-10-03T10:14:06.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        },
+        {
+          "eventId": "e5061482-87b5-45d8-b00e-76999ea81b50",
+          "timestamp": "2026-10-03T10:14:09.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "136ef38d-511b-4505-a9ed-9aaa01f7e760",
+          "timestamp": "2026-10-03T10:14:12.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "f00cfb16-2e99-4b80-a402-d69adb84c0a2",
+          "timestamp": "2026-10-03T10:14:15.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        },
+        {
+          "eventId": "0e0c8a98-b1ae-45ac-b8bc-ebabab2ea5ce",
+          "timestamp": "2026-10-03T10:14:18.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "14a188d0-e480-4cc3-947a-f8f69e646f4d",
+          "timestamp": "2026-10-03T10:14:21.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "ebf01001-da6c-4caa-8f0f-0c24022e5859",
+          "timestamp": "2026-10-03T10:14:24.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        },
+        {
+          "eventId": "153e5b03-6801-49b3-9170-73eb15d51147",
+          "timestamp": "2026-10-03T10:14:27.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "68c463cb-f320-4340-b861-0dd6c6912125",
+          "timestamp": "2026-10-03T10:14:30.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "6d4a992c-4cc1-43a2-9e44-96ba62f08207",
+          "timestamp": "2026-10-03T10:14:33.715Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.94,
+      "riskScore": 75,
+      "reason": "Repeated authentication failures from the observed source are consistent with brute-force activity.",
+      "evidence": [
+        "12 failed authentication attempts detected",
+        "Source IPs involved: 192.168.1.50",
+        "3 usernames targeted",
+        "Repeated authentication failures exceeded threshold"
+      ],
+      "reasoning": [
+        "The detector has identified a pattern of repeated failed login attempts, which is indicative of a brute force attack."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [
+          "Validate the generated defense rule before production deployment."
+        ],
+        "reason": "The model response was normalized into the canonical defense-rule schema."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1110-1791022590976",
+      "ruleName": "Adaptive Defense Rule for T1110 - Brute Force",
+      "attack": {
+        "type": "Brute Force",
+        "mitreTechnique": "T1110"
+      },
+      "type": "authentication_rate_limit",
+      "condition": {
+        "sourceIp": "192.168.1.50",
+        "targetSystem": "SYSTEM-A",
+        "failedAttempts": 5,
+        "windowSeconds": 60
+      },
+      "action": {
+        "0": {
+          "type": "block",
+          "condition": {
+            "field": "username",
+            "value": "test-user-1, test-user-2, test-user-3"
+          },
+          "response": {
+            "message": "Suspicious login attempt detected. Please try again later."
+          }
+        }
+      },
+      "explanation": "This adaptive defense rule is designed to prevent brute force attacks by monitoring and blocking suspicious login attempts.",
+      "severity": "HIGH",
+      "reason": "This adaptive defense rule is designed to prevent brute force attacks by monitoring and blocking suspicious login attempts."
+    },
+    "validation": {
+      "passed": true,
+      "status": "VALIDATED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": []
+    },
+    "fabric": {
+      "incidentId": "INC-1791022590976",
+      "recorded": true,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": "6585db5458c479483046004fc718adb9babd21a1940af6ba7216bda70431dc07",
+      "validationStatus": "VALIDATED",
+      "lifecycleStatus": "READY_FOR_PROPAGATION",
+      "error": null
+    },
+    "state": "OPEN",
+    "acknowledged": false,
+    "triaged": false,
+    "timestamp": "2026-10-03T10:16:30.976Z"
+  },
+  {
+    "id": "INC-1791022431772",
+    "title": "Network Denial of Service",
+    "source": "192.168.1.70",
+    "severity": "High",
+    "tactic": "Network Denial of Service",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T10:13:51.772Z",
+    "status": "Open",
+    "attack": {
+      "id": "b1aa6b89-1d1e-4df2-bf90-6f149fae2cc8",
+      "type": "Network Denial of Service",
+      "technique": {
+        "id": "T1498",
+        "name": "Network Denial of Service"
+      },
+      "sourceIp": "192.168.1.70",
+      "targetSystem": "SYSTEM-A",
+      "events": [
+        {
+          "eventId": "fcea9557-436e-42b3-8982-264a3ef6bcd6",
+          "timestamp": "2026-10-03T10:11:24.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "9ef83755-fe74-4de8-ad16-19b684944a15",
+          "timestamp": "2026-10-03T10:11:24.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "241a2890-cd73-47a8-a0ca-797732e36e4f",
+          "timestamp": "2026-10-03T10:11:24.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "55e67d0a-3b94-410c-af65-27cea74828ef",
+          "timestamp": "2026-10-03T10:11:24.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "67c728ec-a063-4204-8813-2a452bdb3fa5",
+          "timestamp": "2026-10-03T10:11:24.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "de34c9dd-1ccd-4d3f-a9bb-f947b4bd2dcd",
+          "timestamp": "2026-10-03T10:11:24.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e1513205-e05a-4d8e-a1c2-7f8fa6afcbf3",
+          "timestamp": "2026-10-03T10:11:24.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "663a269a-130f-4564-8e60-b1c695778529",
+          "timestamp": "2026-10-03T10:11:24.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "a3353d43-fafa-45bf-b5bf-efc20c9ac04a",
+          "timestamp": "2026-10-03T10:11:25.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "451ee7a8-a890-4077-aa6e-b6bf11e34a8f",
+          "timestamp": "2026-10-03T10:11:25.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "f01d33ae-5c8a-4bf0-8cc4-bb51607d21e3",
+          "timestamp": "2026-10-03T10:11:25.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "4df7d953-ada8-490c-93e5-fb50e4b54bbc",
+          "timestamp": "2026-10-03T10:11:25.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "8e27e57a-65fd-474f-94b8-915ea41105b4",
+          "timestamp": "2026-10-03T10:11:25.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "3a2162b9-1bb6-4bec-b3e1-9fa8937a31f4",
+          "timestamp": "2026-10-03T10:11:25.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "61ed3c99-b9c2-49ea-af66-45fff87972f5",
+          "timestamp": "2026-10-03T10:11:25.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "8720651e-d27b-4fc2-8b02-63937b8d8f0c",
+          "timestamp": "2026-10-03T10:11:25.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e0069245-3943-4595-8cce-8b80a4b1d7c4",
+          "timestamp": "2026-10-03T10:11:25.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "391554f9-9ed4-4747-91bc-fb67fe61a5c9",
+          "timestamp": "2026-10-03T10:11:25.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "0d549ae9-f986-4a79-b5ca-0ba18ab8f758",
+          "timestamp": "2026-10-03T10:11:26.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "d936bed8-cad7-4712-9e34-3c2820b01a9e",
+          "timestamp": "2026-10-03T10:11:26.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "2ef9eacf-7dcb-4efe-8292-93541093cebf",
+          "timestamp": "2026-10-03T10:11:26.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "802eb33d-511a-4ada-a62e-6f8e846a3df7",
+          "timestamp": "2026-10-03T10:11:26.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "494f516b-c295-4d66-9b75-9360c625b767",
+          "timestamp": "2026-10-03T10:11:26.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "d16531a6-c6d6-447b-bbfe-e23e2a4ae8c9",
+          "timestamp": "2026-10-03T10:11:26.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "87c38af6-0414-4478-bf55-157fb0408754",
+          "timestamp": "2026-10-03T10:11:26.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e7da4f27-b6f4-43bc-bb25-3d10a3e73a52",
+          "timestamp": "2026-10-03T10:11:26.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e77f1805-5b38-4706-8b1f-1f3526df81c8",
+          "timestamp": "2026-10-03T10:11:26.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e92e14b5-76bb-4d1b-9707-1c35664df346",
+          "timestamp": "2026-10-03T10:11:26.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "01a928e8-c232-4032-a30f-ce28b2933041",
+          "timestamp": "2026-10-03T10:11:27.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "51c26d67-2dd0-4181-b2dc-64fe2809b5ef",
+          "timestamp": "2026-10-03T10:11:27.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "d70cb029-f5f7-4c5b-81ff-3492bde7de27",
+          "timestamp": "2026-10-03T10:11:27.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "f0a2bdf8-5428-4814-b023-928dda906e64",
+          "timestamp": "2026-10-03T10:11:27.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "b8e702e0-d6fe-4d51-850a-a115bcdaef75",
+          "timestamp": "2026-10-03T10:11:27.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6c6b7d01-dace-4222-91fa-4bd265485796",
+          "timestamp": "2026-10-03T10:11:27.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "c47285bb-f0a6-4f66-ab05-213642cb392e",
+          "timestamp": "2026-10-03T10:11:27.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "88b28974-071a-460a-9f57-f021772ab1f5",
+          "timestamp": "2026-10-03T10:11:27.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "af679c70-cf6c-4972-ba30-9274be5c47ff",
+          "timestamp": "2026-10-03T10:11:27.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "578a240b-e7b2-40b6-a391-9b99c85c27c8",
+          "timestamp": "2026-10-03T10:11:27.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6d6edcee-fdde-4433-8b24-ceabc630805b",
+          "timestamp": "2026-10-03T10:11:28.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "067daa7f-b050-4494-bd06-6b5fede50730",
+          "timestamp": "2026-10-03T10:11:28.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "d863062e-a145-4946-8d5a-104d0f48d7f2",
+          "timestamp": "2026-10-03T10:11:28.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "2812ff60-8ede-475f-988f-e55b86b3dc09",
+          "timestamp": "2026-10-03T10:11:28.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "80d25eb4-f1ed-436c-86cc-1408f6a949ae",
+          "timestamp": "2026-10-03T10:11:28.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "a5892d17-2482-4ec0-9703-e51a44e582b5",
+          "timestamp": "2026-10-03T10:11:28.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "b1b11869-fa83-4750-8b6b-88ddd06516c5",
+          "timestamp": "2026-10-03T10:11:28.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "dc332437-c250-4369-ad18-95d9b526c46f",
+          "timestamp": "2026-10-03T10:11:28.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "7e6620a0-517b-4069-9024-6099da250d5a",
+          "timestamp": "2026-10-03T10:11:28.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6e9bafba-57c8-47db-9e00-1395b66e7ffb",
+          "timestamp": "2026-10-03T10:11:28.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "0094f358-ad14-4c73-8a6e-9a7828522080",
+          "timestamp": "2026-10-03T10:11:29.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "85ba000c-ebc7-4d31-8198-c65ffbaa22f1",
+          "timestamp": "2026-10-03T10:11:29.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e6a4e58d-d310-4795-b412-db88a3006760",
+          "timestamp": "2026-10-03T10:11:29.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "3f4cc9b4-fcfc-4852-8476-acfd272ce5e1",
+          "timestamp": "2026-10-03T10:11:29.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6f88037c-c3f1-47b2-8ef8-690b54325f73",
+          "timestamp": "2026-10-03T10:11:29.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "2c5ad23a-240e-4cff-8146-fec5137553c1",
+          "timestamp": "2026-10-03T10:11:29.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "b0752f9f-f5d0-4057-9645-c5bde80ddd93",
+          "timestamp": "2026-10-03T10:11:29.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "57d43b23-4bd6-4ef4-ada0-844c43cbe5de",
+          "timestamp": "2026-10-03T10:11:29.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6ff96966-f61e-40f8-b8ad-8dadd8e38f4c",
+          "timestamp": "2026-10-03T10:11:29.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "555abf5d-65cf-46ab-98f0-17004d5a9d89",
+          "timestamp": "2026-10-03T10:11:29.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "c56d757c-ba1d-4eaa-a3fd-a061e04cb522",
+          "timestamp": "2026-10-03T10:11:30.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "576a333e-60d7-40ba-83b1-9a29133578c9",
+          "timestamp": "2026-10-03T10:11:30.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "eb4b9d0a-648e-4a33-ace3-89bff469ffed",
+          "timestamp": "2026-10-03T10:11:30.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "c91513ec-d996-4f2f-b32c-040d9c46686e",
+          "timestamp": "2026-10-03T10:11:30.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "828fcbff-6827-44bc-ae7c-1a4194595609",
+          "timestamp": "2026-10-03T10:11:30.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "038c6895-ece3-4baf-8b5c-0cfcb83f1db4",
+          "timestamp": "2026-10-03T10:11:30.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "3034c64e-52db-469c-924f-487aa6256f49",
+          "timestamp": "2026-10-03T10:11:30.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "d6fe105a-8c06-45e9-b337-3e5f201a44cb",
+          "timestamp": "2026-10-03T10:11:30.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "c2cba9c4-3407-491f-bf13-07f648f0b369",
+          "timestamp": "2026-10-03T10:11:30.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "8812fb09-38d1-4d6e-9396-d83b1dcbc992",
+          "timestamp": "2026-10-03T10:11:30.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "1fe31591-6a6f-4dcd-958c-a667a80b637e",
+          "timestamp": "2026-10-03T10:11:31.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "14da7b13-04ab-41dd-9c34-2927a8994429",
+          "timestamp": "2026-10-03T10:11:31.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "ca41bdb2-0aa4-48cb-8ec8-d0e5a11e3044",
+          "timestamp": "2026-10-03T10:11:31.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "7fdbe1d6-9d6a-4787-9e16-5bacd0d88c54",
+          "timestamp": "2026-10-03T10:11:31.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "93568849-316e-449e-88e4-7c64198abdac",
+          "timestamp": "2026-10-03T10:11:31.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "f6c88a81-7d94-4931-8629-6668f42f9ccd",
+          "timestamp": "2026-10-03T10:11:31.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "cec6aa2a-3926-4a63-8c32-f482232dac8f",
+          "timestamp": "2026-10-03T10:11:31.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "ca5c4021-e2f3-44fa-9a0a-aa7f3b1f915e",
+          "timestamp": "2026-10-03T10:11:31.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6aafe4d2-ecf4-48f3-9227-71f63d03e667",
+          "timestamp": "2026-10-03T10:11:31.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "a209d82f-df9d-4614-8120-ff63d97977c2",
+          "timestamp": "2026-10-03T10:11:31.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "2f5153ce-d347-4037-b95c-a200c8fbaf7d",
+          "timestamp": "2026-10-03T10:11:32.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "953ccadd-bcbc-4cba-8308-a28cd4e59d88",
+          "timestamp": "2026-10-03T10:11:32.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "eb0246a1-0350-4590-a39a-10a8afae8d17",
+          "timestamp": "2026-10-03T10:11:32.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "28507009-664b-4f33-a9aa-68edaa641ebf",
+          "timestamp": "2026-10-03T10:11:32.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6ff64422-1d3b-42d6-869c-fb2693532cef",
+          "timestamp": "2026-10-03T10:11:32.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "953d0140-e722-4078-abb6-d2de993bbbc9",
+          "timestamp": "2026-10-03T10:11:32.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "6e93b210-8a74-4bf5-a50d-aab46a3ae0ad",
+          "timestamp": "2026-10-03T10:11:32.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "051cc8cc-ee7f-4918-a904-9669edfee603",
+          "timestamp": "2026-10-03T10:11:32.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "c8e12faf-21fb-486c-923e-3fdd93a17a76",
+          "timestamp": "2026-10-03T10:11:32.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "13790713-42d3-4709-89cf-e7a1705c2992",
+          "timestamp": "2026-10-03T10:11:32.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "fe9fe980-e539-4985-bba9-cf257b39a551",
+          "timestamp": "2026-10-03T10:11:33.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e2bff44e-51e8-496e-a5ad-d7d6b407b433",
+          "timestamp": "2026-10-03T10:11:33.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "c599a0bf-3833-495c-91f0-ecc92135cc85",
+          "timestamp": "2026-10-03T10:11:33.223Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "1a571ec2-049e-495d-a45e-03a061cda068",
+          "timestamp": "2026-10-03T10:11:33.323Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "ffbc4468-c8f7-48cd-b3ea-d9b97217cc11",
+          "timestamp": "2026-10-03T10:11:33.423Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "b306a44a-8c29-4136-a559-f86e98f6eeaf",
+          "timestamp": "2026-10-03T10:11:33.523Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "7aae9d1a-3271-46b0-afe8-02d586413a2b",
+          "timestamp": "2026-10-03T10:11:33.623Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "86316b76-f963-40af-9feb-b38ac22505e7",
+          "timestamp": "2026-10-03T10:11:33.723Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "e0ab961e-5d06-42ee-b64f-6ccf7da27ac2",
+          "timestamp": "2026-10-03T10:11:33.823Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "0f45207b-b20d-4216-b934-b3987e3c2a1b",
+          "timestamp": "2026-10-03T10:11:33.923Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "10e60ae1-e401-4a1e-a341-4dbf39deb296",
+          "timestamp": "2026-10-03T10:11:34.023Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        },
+        {
+          "eventId": "ebd595bd-b644-4017-b02c-e060693952da",
+          "timestamp": "2026-10-03T10:11:34.123Z",
+          "type": "HTTP_REQUEST",
+          "sourceIp": "192.168.1.70",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "method": "GET",
+          "path": "/",
+          "statusCode": 200
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.91,
+      "riskScore": 75,
+      "reason": "The high volume of requests within a short time frame is indicative of network denial-of-service activity.",
+      "evidence": [
+        "100 HTTP requests detected",
+        "Observed request rate: 10.10 requests/second",
+        "Source IP: 192.168.1.70",
+        "Target system: SYSTEM-A",
+        "Traffic occurred within approximately 9.90 seconds"
+      ],
+      "reasoning": [
+        "An unusually large number of HTTP requests directed at the same service in a short period suggests potential denial-of-service (DoS) attack behavior."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [
+          "Validate the generated defense rule before production deployment."
+        ],
+        "reason": "The model response was normalized into the canonical defense-rule schema."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1498-1791022431771",
+      "ruleName": "Adaptive Defense Rule for Network Denial of Service (NIDS)",
+      "attack": {
+        "type": "Network Denial of Service",
+        "mitreTechnique": "T1498"
+      },
+      "type": "http_rate_limit",
+      "condition": {
+        "sourceIp": "192.168.1.70",
+        "targetSystem": "SYSTEM-A",
+        "requestThreshold": 50,
+        "windowSeconds": 15
+      },
+      "action": {
+        "type": "block"
+      },
+      "explanation": "This adaptive defense rule is designed to detect and prevent network denial of service attacks.",
+      "severity": "HIGH",
+      "reason": "This adaptive defense rule is designed to detect and prevent network denial of service attacks."
+    },
+    "validation": {
+      "passed": true,
+      "status": "VALIDATED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": []
+    },
+    "fabric": {
+      "incidentId": "INC-1791022431772",
+      "recorded": true,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": "5f110c1bdd9764550e44a89134862734d9fbc349a767c94d0d4f33f3845ca27b",
+      "validationStatus": "VALIDATED",
+      "lifecycleStatus": "READY_FOR_PROPAGATION",
+      "error": null
+    },
+    "state": "OPEN",
+    "acknowledged": false,
+    "triaged": false,
+    "timestamp": "2026-10-03T10:13:51.772Z"
+  },
+  {
     "id": "INC-1791021713112",
     "title": "Network Service Scanning",
     "source": "192.168.1.60",

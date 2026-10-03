@@ -65,7 +65,7 @@ function PipelineStep({ number, title, description, status = "complete" }) {
   );
 }
 
-function Dashboard({ onNavigateToTerminal }) {
+function Dashboard() {
   const [dashboard, setDashboard] = useState(null);
   const [incident, setIncident] = useState(null);
   const [fabricDefense, setFabricDefense] = useState(null);
@@ -521,13 +521,7 @@ function Dashboard({ onNavigateToTerminal }) {
 
             <span className="toggle-track" />
           </label>
-          <button
-            className="button button-primary"
-            onClick={onNavigateToTerminal}
-            type="button"
-          >
-            Launch Attack Simulator
-          </button>
+
         </div>
       </header>
 
@@ -578,6 +572,60 @@ function Dashboard({ onNavigateToTerminal }) {
           value={fabricDefense ? "1" : "—"}
           detail="Tamper-evident defense records"
         />
+      </section>
+
+      {/* =====================================================
+          TERMINAL ATTACK SIMULATOR
+          ===================================================== */}
+      <section className="terminal-window">
+        <div className="terminal-header">
+          <div className="terminal-dots">
+            <span className="dot red"></span>
+            <span className="dot yellow"></span>
+            <span className="dot green"></span>
+          </div>
+          <span className="terminal-title">root@sentinel:~/attack-simulation</span>
+        </div>
+        <div className="terminal-body">
+          <div className="terminal-line">
+            <span className="prompt">root@sentinel:~#</span>
+            <span>Select attack vector payload:</span>
+          </div>
+          <div className="terminal-controls">
+            <span className="prompt">&gt;</span>
+            <select
+              className="terminal-select"
+              value={attackScenario}
+              onChange={(event) => setAttackScenario(event.target.value)}
+              disabled={simulationLoading}
+            >
+              {attackScenarios.map((scenario) => (
+                <option key={scenario.value} value={scenario.value}>
+                  {scenario.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="terminal-line mt-2">
+            <span className="prompt">root@sentinel:~#</span>
+            <button
+              className="terminal-button"
+              type="button"
+              onClick={simulateAttack}
+              disabled={simulationLoading}
+            >
+              {simulationLoading ? "./run_exploit.sh --progress ..." : "./run_exploit.sh"}
+            </button>
+          </div>
+          {simulationLoading && (
+            <div className="terminal-line mt-2 typing-anim">
+              <span>[!] Initiating exploit sequence...</span><br/>
+              <span>[!] Injecting payload into target system...</span><br/>
+              <span>[!] Awaiting AI incident response...</span><br/>
+              <span className="cursor-blink">_</span>
+            </div>
+          )}
+        </div>
       </section>
 
 
