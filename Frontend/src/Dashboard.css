@@ -1317,6 +1317,7 @@ tbody tr:last-child td {
 }
 .integrity-panel {
   margin-top: 24px;
+  padding: 24px;
 }
 
 .integrity-description {
