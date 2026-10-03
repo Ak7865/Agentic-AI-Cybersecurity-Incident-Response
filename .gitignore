@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Hyperledger Fabric crypto material (private keys and certificates)
+Hyperledger Fabric/crypto/
+*.pem
+*.key
+*.crt
+*.csr
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+data/logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor directories and files
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# Local configuration
+*.local
+
+# Temporary files
+tmp/
+temp/
