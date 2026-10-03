@@ -1,0 +1,48 @@
+{
+  "institute": "Single institute with multiple participating organizations",
+  "organizations": [
+    {
+      "id": "Org1MSP",
+      "name": "SOC / Incident Response Team",
+      "required": true,
+      "peerCount": 2,
+      "ca": "ca.org1.institute.example.com"
+    },
+    {
+      "id": "Org2MSP",
+      "name": "IT Operations",
+      "required": true,
+      "peerCount": 2,
+      "ca": "ca.org2.institute.example.com"
+    },
+    {
+      "id": "Org3MSP",
+      "name": "Compliance & Audit",
+      "required": true,
+      "peerCount": 2,
+      "ca": "ca.org3.institute.example.com"
+    },
+    {
+      "id": "Org4MSP",
+      "name": "Management / Governance",
+      "required": false,
+      "peerCount": 1,
+      "ca": "ca.org4.institute.example.com"
+    }
+  ],
+  "orderingService": {
+    "shared": true,
+    "description": "Single shared ordering service for all organizations"
+  },
+  "channels": {
+    "primary": "main-incident-channel",
+    "optionalConfidential": "compliance-soc-confidential"
+  },
+  "privateDataCollections": [
+    {
+      "name": "incidentEvidencePrivateCollection",
+      "purpose": "Sensitive evidence metadata and storage references",
+      "authorizedOrgs": ["Org1MSP", "Org3MSP"]
+    }
+  ]
+}

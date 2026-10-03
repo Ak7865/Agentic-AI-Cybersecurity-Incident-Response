@@ -145,7 +145,14 @@ The main API endpoints are:
 
 `server/fabricClient.js` connects to the local Fabric peer at `localhost:7051` using the Org1 certificate, private key, and TLS certificate in `Hyperledger Fabric/crypto/org1/`.
 
-Before registration, it calculates a SHA-256 hash of the evidence array. It then calls the `defenseRegistry` chaincode with the incident ID, attack details, risk/confidence values, evidence hash, complete defense rule, validation status, and timestamp.
+Before registration, it calculates a SHA-256 hash of the evidence array. It then calls the `defenseRegistry` chaincode with the incident ID, attack details, risk/confidence values, evidence hash, complete defense rule, validation status, organization-level access policy, and timestamp.
+
+The chaincode now supports:
+
+- **multi-organization ownership and access policy fields** (`ownerOrgMsp`, `allowedOrgs`, `allowedRoles`)
+- **approval workflow controls** (`requiredApprovals` and organization approvals)
+- **private evidence anchoring** into `incidentEvidencePrivateCollection` for secure off-chain evidence references
+- **immutable audit history queries** using incident transaction history
 
 The Fabric lifecycle is:
 
@@ -155,7 +162,29 @@ VALIDATED
     -> PROPAGATED
 ```
 
-The same canonical incident ID is used to register the defense, read it, verify its evidence, and change its lifecycle status. The propagation route refuses to query Fabric unless the local incident says that the defense was successfully registered first.
+The same canonical incident ID is used to register the defense, read it, verify its evidence, and change its lifecycle status. The backend also records Fabric transaction IDs so each incident action can be traced back to an on-chain transaction.
+
+### Multi-Organization Fabric Profile
+
+Reference topology and rollout configuration are provided in:
+
+- `Hyperledger Fabric/network/multi-org-topology.json`
+- `Hyperledger Fabric/network/deployment-phases.json`
+
+Default deployment model:
+
+- **Organizations**
+  - `Org1MSP`: SOC / Incident Response Team
+  - `Org2MSP`: IT Operations
+  - `Org3MSP`: Compliance & Audit
+  - `Org4MSP`: Management / Governance (optional)
+- **Channel**
+  - `main-incident-channel` (primary shared channel)
+  - `compliance-soc-confidential` (optional confidential channel)
+- **Private evidence collection**
+  - `incidentEvidencePrivateCollection` for sensitive evidence metadata
+- **Closure policy**
+  - incident closure can require approvals from both SOC and Compliance organizations
 
 ## 7. Frontend Workflow & Matrix UI
 
@@ -175,8 +204,18 @@ Prerequisites:
 
 - Node.js and the project dependencies installed.
 - Ollama running locally with the configured model available.
-- The required Fabric peer, channel `mychannel`, and `defenseRegistry` chaincode already running.
+- The required Fabric peer, channel `main-incident-channel`, and `defenseRegistry` chaincode already running.
 - The crypto files expected by `server/fabricClient.js` available under `Hyperledger Fabric/crypto/org1/`.
+
+Optional environment variables for multi-organization policy:
+
+- `FABRIC_CHANNEL_NAME` (default: `main-incident-channel`)
+- `FABRIC_CHAINCODE_NAME` (default: `defenseRegistry`)
+- `FABRIC_OWNER_ORG_MSP` (default: `Org1MSP`)
+- `FABRIC_ALLOWED_ORGS` (default: `Org1MSP,Org2MSP,Org3MSP,Org4MSP`)
+- `FABRIC_ALLOWED_ROLES` (default: `analyst,responder,auditor,admin`)
+- `FABRIC_REQUIRED_APPROVAL_ORGS` (default: `Org1MSP,Org3MSP`)
+- `FABRIC_PRIVATE_EVIDENCE_COLLECTION` (default: `incidentEvidencePrivateCollection`)
 
 Install dependencies if needed:
 
@@ -228,7 +267,7 @@ Expected success logs include:
 | The dashboard shows `REJECTED` | Read the validation errors in the incident response. Fabric registration is intentionally skipped. |
 | Integrity buttons are absent | The defense must be validated and successfully recorded on Fabric first. |
 | Propagation is disabled | The Fabric lifecycle is not yet `READY_FOR_PROPAGATION`, or the rule was already propagated. |
-| Fabric connection fails | Confirm the peer is listening at `localhost:7051`, `mychannel` and `defenseRegistry` exist, and the local crypto files are correct. |
+| Fabric connection fails | Confirm the peer is listening at `localhost:7051`, `main-incident-channel` and `defenseRegistry` exist, and the local crypto files are correct. |
 
 ## Current Boundaries
 

@@ -31,11 +31,38 @@ const {
   getAllDefenses,
   hashEvidence,
   closeFabricConnection,
+  CHANNEL_NAME,
+  CHAINCODE_NAME,
+  OWNER_ORG_MSP,
+  PRIVATE_EVIDENCE_COLLECTION,
 } = require("./fabricClient");
 
 const app = express();
 
 const PORT = 5000;
+
+const DEFAULT_ACCESS_POLICY = {
+  ownerOrgMSP:
+    OWNER_ORG_MSP,
+
+  allowedOrgs:
+    (process.env.FABRIC_ALLOWED_ORGS || "Org1MSP,Org2MSP,Org3MSP,Org4MSP")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean),
+
+  allowedRoles:
+    (process.env.FABRIC_ALLOWED_ROLES || "analyst,responder,auditor,admin")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean),
+
+  requiredApprovals:
+    (process.env.FABRIC_REQUIRED_APPROVAL_ORGS || "Org1MSP,Org3MSP")
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean),
+};
 
 app.use(cors());
 app.use(express.json());
@@ -380,10 +407,26 @@ app.post("/api/attack/simulate", async (req, res) => {
         recorded: false,
 
         network:
-          "mychannel",
+          CHANNEL_NAME,
 
         chaincode:
-          "defenseRegistry",
+          CHAINCODE_NAME,
+
+        ownerOrgMSP:
+          DEFAULT_ACCESS_POLICY.ownerOrgMSP,
+
+        accessPolicy:
+          {
+            allowedOrgs: [
+              ...DEFAULT_ACCESS_POLICY.allowedOrgs,
+            ],
+            allowedRoles: [
+              ...DEFAULT_ACCESS_POLICY.allowedRoles,
+            ],
+            requiredApprovals: [
+              ...DEFAULT_ACCESS_POLICY.requiredApprovals,
+            ],
+          },
 
         evidenceHash:
           null,
@@ -472,6 +515,36 @@ app.post("/api/attack/simulate", async (req, res) => {
 
             timestamp:
               incident.timestamp,
+
+            ownerOrgMSP:
+              DEFAULT_ACCESS_POLICY.ownerOrgMSP,
+
+            accessPolicy:
+              {
+                allowedOrgs: [
+                  ...DEFAULT_ACCESS_POLICY.allowedOrgs,
+                ],
+                allowedRoles: [
+                  ...DEFAULT_ACCESS_POLICY.allowedRoles,
+                ],
+                requiredApprovals: [
+                  ...DEFAULT_ACCESS_POLICY.requiredApprovals,
+                ],
+              },
+
+            evidencePrivateMetadata:
+              {
+                collection:
+                  PRIVATE_EVIDENCE_COLLECTION,
+                storageType:
+                  "off-chain-secure-storage",
+                storageReference:
+                  `evidence://${fabricIncidentId}`,
+                evidenceItemCount:
+                  Array.isArray(agentResult.evidence)
+                    ? agentResult.evidence.length
+                    : 0,
+              },
           });
 
         /*
@@ -487,13 +560,37 @@ app.post("/api/attack/simulate", async (req, res) => {
             true,
 
           network:
-            "mychannel",
+            CHANNEL_NAME,
 
           chaincode:
-            "defenseRegistry",
+            CHAINCODE_NAME,
+
+          ownerOrgMSP:
+            DEFAULT_ACCESS_POLICY.ownerOrgMSP,
+
+          accessPolicy:
+            {
+              allowedOrgs: [
+                ...DEFAULT_ACCESS_POLICY.allowedOrgs,
+              ],
+              allowedRoles: [
+                ...DEFAULT_ACCESS_POLICY.allowedRoles,
+              ],
+              requiredApprovals: [
+                ...DEFAULT_ACCESS_POLICY.requiredApprovals,
+              ],
+            },
 
           evidenceHash:
             fabricResult.evidenceHash,
+
+          transactionIds:
+            {
+              registerDefense:
+                fabricResult.transactionId,
+              privateEvidenceAnchor:
+                fabricResult.privateEvidenceTransactionId,
+            },
 
           validationStatus:
             validation.status,
@@ -525,6 +622,12 @@ app.post("/api/attack/simulate", async (req, res) => {
         incident.fabric.lifecycleStatus =
           statusResult.status;
 
+        incident.fabric.transactionIds =
+          incident.fabric.transactionIds || {};
+
+        incident.fabric.transactionIds.setReadyForPropagation =
+          statusResult.transactionId;
+
         console.log(
           `[Fabric] ${fabricIncidentId} is READY_FOR_PROPAGATION`
         );
@@ -552,10 +655,26 @@ app.post("/api/attack/simulate", async (req, res) => {
             false,
 
           network:
-            "mychannel",
+            CHANNEL_NAME,
 
           chaincode:
-            "defenseRegistry",
+            CHAINCODE_NAME,
+
+          ownerOrgMSP:
+            DEFAULT_ACCESS_POLICY.ownerOrgMSP,
+
+          accessPolicy:
+            {
+              allowedOrgs: [
+                ...DEFAULT_ACCESS_POLICY.allowedOrgs,
+              ],
+              allowedRoles: [
+                ...DEFAULT_ACCESS_POLICY.allowedRoles,
+              ],
+              requiredApprovals: [
+                ...DEFAULT_ACCESS_POLICY.requiredApprovals,
+              ],
+            },
 
           evidenceHash:
             null,
