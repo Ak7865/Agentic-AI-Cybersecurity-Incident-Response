@@ -244,19 +244,20 @@ h3 {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: var(--text-main);
-  font-family: 'Outfit', sans-serif;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.03em;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
 .button:hover:not(:disabled) {
   border-color: var(--accent-color);
-  background: rgba(49, 215, 165, 0.1);
+  background: rgba(0, 255, 65, 0.1);
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(49, 215, 165, 0.15);
+  box-shadow: 0 10px 15px -3px rgba(0, 255, 65, 0.15);
 }
 
 .button:active:not(:disabled) {
@@ -271,14 +272,15 @@ h3 {
 
 .button-primary {
   border-color: var(--accent-color);
-  background: var(--accent-color);
-  color: #000;
-  box-shadow: 0 0 15px var(--accent-glow);
+  background: transparent;
+  color: var(--accent-color);
+  box-shadow: 0 0 10px rgba(0, 255, 65, 0.2);
 }
 
 .button-primary:hover:not(:disabled) {
-  background: #2cd29d;
-  box-shadow: 0 0 25px var(--accent-glow);
+  background: var(--accent-color);
+  color: #000;
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .button-secondary {
