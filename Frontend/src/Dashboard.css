@@ -1,18 +1,18 @@
 :root {
-  --bg-color: #030712;
-  --bg-gradient: radial-gradient(circle at 50% -20%, #1a103c, #030712 60%);
-  --text-main: #f3f4f6;
-  --text-muted: #9ca3af;
-  --accent-color: #31d7a5;
-  --accent-glow: rgba(49, 215, 165, 0.4);
-  --glass-bg: rgba(17, 24, 39, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --bg-color: #000000;
+  --bg-gradient: radial-gradient(circle at 50% -20%, #002200, #000000 60%);
+  --text-main: #00ff41;
+  --text-muted: #008f11;
+  --accent-color: #00ff41;
+  --accent-glow: rgba(0, 255, 65, 0.5);
+  --glass-bg: rgba(0, 15, 0, 0.85);
+  --glass-border: rgba(0, 255, 65, 0.3);
+  --card-shadow: 0 8px 32px 0 rgba(0, 255, 65, 0.1);
   
   color: var(--text-main);
   background: var(--bg-color);
   color-scheme: dark;
-  font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+  font-family: 'SFMono-Regular', Consolas, 'Outfit', 'Inter', monospace;
 }
 
 :root[data-theme="light"] {
@@ -118,22 +118,23 @@ h1 {
   font-size: 38px;
   font-weight: 700;
   line-height: 1.15;
-  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  background: linear-gradient(135deg, #00ff41 0%, #008f11 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   letter-spacing: -0.02em;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
 }
 
 h2 {
   margin-bottom: 0;
-  color: #edf6f2;
+  color: var(--text-main);
   font-size: 20px;
   line-height: 1.25;
 }
 
 h3 {
-  color: #dceae5;
+  color: var(--text-muted);
 }
 
 .subtitle {
