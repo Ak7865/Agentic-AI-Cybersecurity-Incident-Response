@@ -1,0 +1,343 @@
+[
+  {
+    "id": "INC-1791019931918",
+    "title": "Brute Force",
+    "source": "192.168.1.50",
+    "severity": "High",
+    "tactic": "Brute Force",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T09:32:11.918Z",
+    "status": "Acknowledged",
+    "attack": {
+      "id": "27874ccc-1d54-42a8-9284-e99eb02931e5",
+      "type": "Brute Force",
+      "technique": {
+        "id": "T1110",
+        "name": "Brute Force"
+      },
+      "sourceIp": "192.168.1.50",
+      "targetSystem": "SYSTEM-A",
+      "failedAttempts": 12,
+      "events": [
+        {
+          "eventId": "c995c138-4f6d-49ae-ab4f-479d2e4334d8",
+          "timestamp": "2026-10-03T09:29:12.013Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "0f523204-f139-45bf-8971-a36353570d96",
+          "timestamp": "2026-10-03T09:29:15.014Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "31f6f654-0e15-4f60-955d-ff44287b5908",
+          "timestamp": "2026-10-03T09:29:18.014Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        },
+        {
+          "eventId": "3025af41-1f75-41df-84fd-7d98e310655c",
+          "timestamp": "2026-10-03T09:29:21.014Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "423c16d7-5bca-490e-806a-61c56b33353f",
+          "timestamp": "2026-10-03T09:29:24.014Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "13a981c0-b95a-405f-b55f-6b8591e0d535",
+          "timestamp": "2026-10-03T09:29:27.055Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        },
+        {
+          "eventId": "0f05ca95-8118-4e4d-b456-36fd58e97ea3",
+          "timestamp": "2026-10-03T09:29:30.058Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "c5d3ff42-42f2-46d3-abad-3f655606881e",
+          "timestamp": "2026-10-03T09:29:33.058Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "38f5d23a-a8aa-48ce-bc8f-8703d812ee84",
+          "timestamp": "2026-10-03T09:29:36.058Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        },
+        {
+          "eventId": "fd58e59a-cfb4-4d65-b8cf-20df60943a9e",
+          "timestamp": "2026-10-03T09:29:39.058Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-1"
+        },
+        {
+          "eventId": "cd1989d2-ae77-407d-84cf-781bb1c82e98",
+          "timestamp": "2026-10-03T09:29:42.059Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-2"
+        },
+        {
+          "eventId": "737bc927-e73b-4ec0-abd1-fd660ebb5daa",
+          "timestamp": "2026-10-03T09:29:45.059Z",
+          "type": "AUTHENTICATION_FAILURE",
+          "sourceIp": "192.168.1.50",
+          "targetSystem": "SYSTEM-A",
+          "username": "test-user-3"
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.94,
+      "riskScore": 75,
+      "reason": "Repeated authentication failures from the observed source are consistent with brute-force activity.",
+      "evidence": [
+        "12 failed authentication attempts detected",
+        "Source IPs involved: 192.168.1.50",
+        "3 usernames targeted",
+        "Repeated authentication failures exceeded threshold"
+      ],
+      "reasoning": [
+        "The detector has identified a pattern of repeated failed login attempts, which is indicative of a brute force attack."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [
+          "Validate the generated defense rule before production deployment."
+        ],
+        "reason": "The model response was normalized into the canonical defense-rule schema."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1110-1791019931918",
+      "ruleName": "Adaptive Defense Rule for Brute Force Attack",
+      "attack": {
+        "type": "Brute Force",
+        "mitreTechnique": "T1110"
+      },
+      "type": "authentication_rate_limit",
+      "condition": {
+        "sourceIp": "192.168.1.50",
+        "targetSystem": "SYSTEM-A",
+        "failedAttempts": 5,
+        "windowSeconds": 60
+      },
+      "action": {
+        "type": "Log",
+        "log_level": "INFO",
+        "message": "Brute force attack detected. Blocking the connection."
+      },
+      "explanation": "This rule is designed to detect and prevent brute force attacks on a system.",
+      "severity": "HIGH",
+      "reason": "This rule is designed to detect and prevent brute force attacks on a system."
+    },
+    "validation": {
+      "passed": true,
+      "status": "VALIDATED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": []
+    },
+    "fabric": {
+      "incidentId": "INC-1791019931918",
+      "recorded": true,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": "6585db5458c479483046004fc718adb9babd21a1940af6ba7216bda70431dc07",
+      "validationStatus": "VALIDATED",
+      "lifecycleStatus": "PROPAGATED",
+      "error": null
+    },
+    "state": "ACKNOWLEDGED",
+    "acknowledged": true,
+    "triaged": false,
+    "timestamp": "2026-10-03T09:32:11.918Z",
+    "propagation": {
+      "status": "PROPAGATED",
+      "simulated": true,
+      "propagatedAt": "2026-10-03T09:32:39.941Z",
+      "ruleId": "AG-IDS-T1110-1791019931918",
+      "ruleType": "authentication_rate_limit",
+      "action": {
+        "log_level": "INFO",
+        "message": "Brute force attack detected. Blocking the connection.",
+        "type": "Log"
+      }
+    }
+  },
+  {
+    "id": "INC-1791019790082",
+    "title": "Command and Scripting Interpreter",
+    "source": "192.168.1.80",
+    "severity": "High",
+    "tactic": "PowerShell",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T09:29:50.082Z",
+    "status": "Acknowledged",
+    "attack": {
+      "id": "627cd3e3-a2da-4a57-8219-8ccc90fcd408",
+      "type": "Command and Scripting Interpreter",
+      "technique": {
+        "id": "T1059.001",
+        "name": "PowerShell"
+      },
+      "sourceIp": "192.168.1.80",
+      "targetSystem": "SYSTEM-A",
+      "events": [
+        {
+          "eventId": "d8cfccc3-6829-47c1-9385-023584b3fd59",
+          "timestamp": "2026-10-03T09:27:33.940Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "powershell.exe",
+          "parentProcess": "winword.exe",
+          "commandLine": "powershell -enc <redacted>"
+        },
+        {
+          "eventId": "63dbff85-134e-45ab-bb54-f336c1d72da2",
+          "timestamp": "2026-10-03T09:27:33.942Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "cmd.exe",
+          "parentProcess": "powershell.exe",
+          "commandLine": "cmd.exe /c whoami"
+        },
+        {
+          "eventId": "b27d7128-dcbf-4c7f-a0b6-b2a1c9f80230",
+          "timestamp": "2026-10-03T09:27:33.942Z",
+          "type": "PROCESS_START",
+          "sourceIp": "192.168.1.80",
+          "targetSystem": "SYSTEM-A",
+          "processName": "net.exe",
+          "parentProcess": "cmd.exe",
+          "commandLine": "net user"
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.9,
+      "riskScore": 75,
+      "reason": "PowerShell execution from an unusual process chain is consistent with suspicious command and scripting activity.",
+      "evidence": [
+        "PowerShell process execution detected",
+        "PowerShell was spawned by Microsoft Word",
+        "powershell.exe spawned by winword.exe",
+        "cmd.exe spawned by powershell.exe",
+        "net.exe spawned by cmd.exe"
+      ],
+      "reasoning": [
+        "The evidence points to PowerShell being executed through a series of processes that are not typical for legitimate activities."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [],
+        "reason": "The proposed defense directly mitigates the detected behavior."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1059.001-1791019790080",
+      "ruleName": "Adaptive PowerShell Execution Protection",
+      "attack": {
+        "type": "Command and Scripting Interpreter",
+        "mitreTechnique": "T1059.001"
+      },
+      "type": "suspicious_process_chain_restriction",
+      "condition": {
+        "processChainLengthThreshold": 5,
+        "thresholdSeconds": 60
+      },
+      "action": {
+        "type": "temporary_execution_restriction",
+        "durationSeconds": 300
+      },
+      "explanation": "Restricts execution of PowerShell through an unusual process chain to prevent suspicious command and scripting activity.",
+      "severity": "HIGH",
+      "reason": "The observed evidence points to PowerShell being executed through a series of processes that are not typical for legitimate activities."
+    },
+    "validation": {
+      "passed": false,
+      "status": "REJECTED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": [
+        "Defense condition does not contain telemetry fields relevant to T1059.001."
+      ]
+    },
+    "fabric": {
+      "incidentId": "INC-1791019790082",
+      "recorded": false,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": null,
+      "validationStatus": "REJECTED",
+      "lifecycleStatus": null,
+      "error": null
+    },
+    "state": "ACKNOWLEDGED",
+    "acknowledged": true,
+    "triaged": false,
+    "timestamp": "2026-10-03T09:29:50.082Z"
+  }
+]
