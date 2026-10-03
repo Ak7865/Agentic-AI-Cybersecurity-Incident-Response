@@ -70,9 +70,9 @@ button {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 28px;
-  padding: 16px 28px;
-  margin: -28px -28px 28px -28px;
+  gap: 16px;
+  padding: 8px 24px;
+  margin: -28px -28px 24px -28px;
   border-bottom: 1px solid var(--glass-border);
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
@@ -140,8 +140,8 @@ h3 {
   max-width: 760px;
   margin-bottom: 0;
   color: #879c93;
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 .topbar-actions {
@@ -159,16 +159,16 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  min-height: 29px;
-  padding: 6px 12px;
+  min-height: 32px;
+  padding: 6px 14px;
   border: 1px solid rgba(49, 215, 165, 0.2);
   border-radius: 6px;
   color: #a7f3d0;
   background: rgba(49, 215, 165, 0.05);
   font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   box-shadow: 0 0 10px rgba(49, 215, 165, 0.05) inset;
 }
 
@@ -313,7 +313,8 @@ h3 {
 
 .notice p {
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* METRICS */
@@ -364,9 +365,10 @@ h3 {
     "SFMono-Regular",
     Consolas,
     monospace;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .metric-card strong {
@@ -385,8 +387,9 @@ h3 {
 }
 
 .metric-detail {
-  color: #71867d;
-  font-size: 11px;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-top: 4px;
 }
 
 /* PANELS */
@@ -468,9 +471,10 @@ h3 {
 }
 
 .hero-description {
-  margin: 8px 0 0;
-  color: #8fa29a;
-  font-size: 13px;
+  margin: 12px 0 0;
+  color: #94a3b8;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .hero-badges {
@@ -493,13 +497,10 @@ h3 {
   padding: 4px 8px;
   border: 1px solid transparent;
   border-radius: 4px;
-  font-family:
-    "SFMono-Regular",
-    Consolas,
-    monospace;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
 }
 
 .severity-critical {
@@ -598,11 +599,21 @@ h3 {
 
 .pipeline-step {
   position: relative;
-  min-height: 150px;
-  padding: 13px;
-  border: 1px solid #284138;
-  border-radius: 6px;
-  background: #0a1411;
+  min-height: 160px;
+  padding: 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pipeline-step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border-color: rgba(49, 215, 165, 0.3);
 }
 
 .pipeline-step:not(:last-child)::after {
@@ -629,8 +640,8 @@ h3 {
     "SFMono-Regular",
     Consolas,
     monospace;
-  font-size: 9px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
 }
 
 .pipeline-title-row {
@@ -640,8 +651,9 @@ h3 {
 }
 
 .pipeline-title-row strong {
-  color: #dceae5;
-  font-size: 12px;
+  color: #f1f5f9;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .pipeline-status {
@@ -651,16 +663,17 @@ h3 {
     "SFMono-Regular",
     Consolas,
     monospace;
-  font-size: 8px;
-  font-weight: 800;
+  font-size: 10px;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .pipeline-content p {
   margin: 9px 0 0;
-  color: #71867d;
-  font-size: 10px;
-  line-height: 1.5;
+  color: #94a3b8;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 /* ANALYSIS */
@@ -680,10 +693,11 @@ h3 {
   margin-bottom: 18px;
   padding: 12px;
   border-left: 2px solid #31d7a5;
-  background: #0a1512;
-  color: #a9bbb4;
-  font-size: 13px;
-  line-height: 1.55;
+  background: rgba(49, 215, 165, 0.05);
+  color: #e2e8f0;
+  font-size: 15px;
+  line-height: 1.6;
+  border-radius: 0 8px 8px 0;
 }
 
 .reasoning-list {
@@ -704,19 +718,16 @@ h3 {
 
 .reasoning-item > span {
   color: #3dcba4;
-  font-family:
-    "SFMono-Regular",
-    Consolas,
-    monospace;
-  font-size: 10px;
-  font-weight: 800;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .reasoning-item p {
   margin: 0;
   color: #9dafaa;
-  font-size: 11px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .evidence-block {
@@ -726,15 +737,15 @@ h3 {
 }
 
 .evidence-block h3 {
-  margin-bottom: 10px;
-  font-size: 12px;
+  margin-bottom: 12px;
+  font-size: 15px;
 }
 
 .evidence-block ul {
   margin: 0;
-  padding-left: 17px;
+  padding-left: 20px;
   color: #859990;
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.6;
 }
 
@@ -755,20 +766,17 @@ h3 {
 .rule-summary span,
 .fabric-grid span {
   display: block;
-  color: #6e847a;
-  font-size: 10px;
+  color: #94a3b8;
+  font-size: 13px;
 }
 
 .rule-summary strong,
 .fabric-grid strong {
   display: block;
   margin-top: 8px;
-  color: #dceae5;
-  font-family:
-    "SFMono-Regular",
-    Consolas,
-    monospace;
-  font-size: 11px;
+  color: #f1f5f9;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 14px;
 }
 
 .validation-grid {
@@ -781,14 +789,14 @@ h3 {
 .validation-grid > div {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 10px;
+  gap: 8px;
+  padding: 12px;
   border: 1px solid #235342;
-  border-radius: 5px;
+  border-radius: 8px;
   color: #80d9bd;
   background: #0c2019;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .check-icon {
@@ -799,15 +807,13 @@ h3 {
 /* FABRIC */
 
 .fabric-panel {
-  margin-bottom: 14px;
-  padding: 20px;
+  margin-bottom: 24px;
+  padding: 24px;
   border-color: #304f69;
-  background:
-    linear-gradient(
-      135deg,
-      #0d1814,
-      #0b1419
-    );
+  background: linear-gradient(135deg, rgba(13, 24, 20, 0.7), rgba(11, 20, 25, 0.7));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
 }
 
 .fabric-grid {
