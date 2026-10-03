@@ -66,6 +66,8 @@ The important security rule is that the model can propose a rule, but it cannot 
 
 Every event has a UUID, timestamp, event type, source IP, target system, and scenario-specific fields. The simulator deliberately does not label the result as an attack; the detector must infer that from the evidence.
 
+The simulator now also supports hierarchy context fields (`endpointId`, `labId`, `collegeId`, `instituteId`) so incidents can be propagated by scope (lab, college, institute-wide) without using real offensive tools.
+
 ## 2. Detector
 
 `Cyber Security/detector.js` is deterministic. It reads the events and evaluates these rules in this order:
@@ -134,12 +136,29 @@ The main API endpoints are:
 | Endpoint | Purpose |
 | --- | --- |
 | `POST /api/attack/simulate` | Runs the complete simulation pipeline |
+| `GET /api/assets/hierarchy` | Returns endpoint hierarchy (PC -> Lab -> College -> ASTU) |
 | `GET /api/incidents` | Returns the JSON-backed incident dashboard data |
 | `POST /api/incidents/:incidentId/acknowledge` | Marks an incident as acknowledged |
 | `GET /api/incidents/:incidentId/triage` | Returns a triage recommendation |
 | `POST /api/incidents/:incidentId/verify-integrity` | Compares current and Fabric-recorded evidence hashes |
-| `POST /api/incidents/:incidentId/propagate` | Simulates controlled propagation |
+| `POST /api/incidents/:incidentId/propagation/approve` | Records SOC/Compliance or Governance approvals for wider rollout |
+| `POST /api/incidents/:incidentId/propagate` | Simulates staged scope rollout with canary, rollback, TTL, and version tracking |
 | `GET /api/fabric/defenses/:incidentId` | Reads one Fabric defense record |
+
+### Hierarchical Defense Propagation
+
+Propagation is modeled as staged rollout scopes:
+
+1. `LAB_ONLY`
+2. `COLLEGE_WIDE` (requires `SOC_COMPLIANCE` approval)
+3. `ASTU_WIDE` (requires `ASTU_GOVERNANCE` approval)
+
+Each propagation call:
+
+- fans out through simulated central IDS orchestrators
+- starts with canary endpoints before full rollout
+- triggers rollback if false-positive rate exceeds threshold
+- records scope transition and lifecycle updates on Fabric with transaction IDs
 
 ## 6. Hyperledger Fabric
 
@@ -272,3 +291,5 @@ Expected success logs include:
 ## Current Boundaries
 
 This project demonstrates the reasoning, approval, provenance, integrity, and lifecycle portions of incident response. It does not deploy an actual firewall rule or modify a live endpoint. A production version would need authenticated users, durable incident storage, operational monitoring, policy governance, audit retention, and real integrations with the organization’s enforcement tools.
+
+For safety and legal reasons, this repository intentionally avoids integrating real offensive attack tools (for example LOIC). Use synthetic telemetry, replayed datasets, and isolated defensive test traffic in controlled lab environments.

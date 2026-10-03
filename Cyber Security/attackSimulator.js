@@ -11,6 +11,27 @@ function createEvent(type, data = {}, offsetSeconds = 0) {
   };
 }
 
+function resolveContext(context = {}) {
+  return {
+    sourceIp:
+      context.sourceIp || "192.168.1.50",
+    targetSystem:
+      context.targetSystem ||
+      context.endpointId ||
+      "SYSTEM-A",
+    endpointId:
+      context.endpointId ||
+      context.targetSystem ||
+      "SYSTEM-A",
+    labId:
+      context.labId || "LAB-01",
+    collegeId:
+      context.collegeId || "COLLEGE-01",
+    instituteId:
+      context.instituteId || "ASTU-NETWORK",
+  };
+}
+
 /**
  * Brute-force authentication telemetry.
  *
@@ -18,9 +39,15 @@ function createEvent(type, data = {}, offsetSeconds = 0) {
  * The simulator does NOT specify the attack type.
  * The detector must infer it from the events.
  */
-function generateBruteForceTelemetry() {
-  const sourceIp = "192.168.1.50";
-  const targetSystem = "SYSTEM-A";
+function generateBruteForceTelemetry(context = {}) {
+  const resolved =
+    resolveContext(context);
+
+  const sourceIp =
+    resolved.sourceIp;
+
+  const targetSystem =
+    resolved.targetSystem;
 
   const events = [];
 
@@ -31,6 +58,14 @@ function generateBruteForceTelemetry() {
         {
           sourceIp,
           targetSystem,
+          endpointId:
+            resolved.endpointId,
+          labId:
+            resolved.labId,
+          collegeId:
+            resolved.collegeId,
+          instituteId:
+            resolved.instituteId,
           username: `test-user-${(i % 3) + 1}`,
         },
         i * 3
@@ -42,6 +77,14 @@ function generateBruteForceTelemetry() {
     attackId: crypto.randomUUID(),
     sourceIp,
     targetSystem,
+    endpointId:
+      resolved.endpointId,
+    labId:
+      resolved.labId,
+    collegeId:
+      resolved.collegeId,
+    instituteId:
+      resolved.instituteId,
     events,
   };
 }
@@ -51,9 +94,19 @@ function generateBruteForceTelemetry() {
  *
  * One source attempts connections to many ports.
  */
-function generateNetworkScanTelemetry() {
-  const sourceIp = "192.168.1.60";
-  const targetSystem = "SYSTEM-A";
+function generateNetworkScanTelemetry(context = {}) {
+  const resolved =
+    resolveContext({
+      sourceIp:
+        context.sourceIp || "192.168.1.60",
+      ...context,
+    });
+
+  const sourceIp =
+    resolved.sourceIp;
+
+  const targetSystem =
+    resolved.targetSystem;
 
   const ports = [
     21,
@@ -79,6 +132,14 @@ function generateNetworkScanTelemetry() {
       {
         sourceIp,
         targetSystem,
+        endpointId:
+          resolved.endpointId,
+        labId:
+          resolved.labId,
+        collegeId:
+          resolved.collegeId,
+        instituteId:
+          resolved.instituteId,
         destinationPort: port,
         protocol: "TCP",
         connectionStatus: "REFUSED",
@@ -91,6 +152,14 @@ function generateNetworkScanTelemetry() {
     attackId: crypto.randomUUID(),
     sourceIp,
     targetSystem,
+    endpointId:
+      resolved.endpointId,
+    labId:
+      resolved.labId,
+    collegeId:
+      resolved.collegeId,
+    instituteId:
+      resolved.instituteId,
     events,
   };
 }
@@ -101,9 +170,19 @@ function generateNetworkScanTelemetry() {
  * This generates telemetry only.
  * It does NOT send traffic to an external/public target.
  */
-function generateDosTelemetry() {
-  const sourceIp = "192.168.1.70";
-  const targetSystem = "SYSTEM-A";
+function generateDosTelemetry(context = {}) {
+  const resolved =
+    resolveContext({
+      sourceIp:
+        context.sourceIp || "192.168.1.70",
+      ...context,
+    });
+
+  const sourceIp =
+    resolved.sourceIp;
+
+  const targetSystem =
+    resolved.targetSystem;
 
   const events = [];
 
@@ -114,6 +193,14 @@ function generateDosTelemetry() {
         {
           sourceIp,
           targetSystem,
+          endpointId:
+            resolved.endpointId,
+          labId:
+            resolved.labId,
+          collegeId:
+            resolved.collegeId,
+          instituteId:
+            resolved.instituteId,
           destinationPort: 80,
           method: "GET",
           path: "/",
@@ -128,6 +215,14 @@ function generateDosTelemetry() {
     attackId: crypto.randomUUID(),
     sourceIp,
     targetSystem,
+    endpointId:
+      resolved.endpointId,
+    labId:
+      resolved.labId,
+    collegeId:
+      resolved.collegeId,
+    instituteId:
+      resolved.instituteId,
     events,
   };
 }
@@ -135,14 +230,32 @@ function generateDosTelemetry() {
 /**
  * Suspicious process execution telemetry.
  */
-function generateSuspiciousProcessTelemetry() {
-  const sourceIp = "192.168.1.80";
-  const targetSystem = "SYSTEM-A";
+function generateSuspiciousProcessTelemetry(context = {}) {
+  const resolved =
+    resolveContext({
+      sourceIp:
+        context.sourceIp || "192.168.1.80",
+      ...context,
+    });
+
+  const sourceIp =
+    resolved.sourceIp;
+
+  const targetSystem =
+    resolved.targetSystem;
 
   const events = [
     createEvent("PROCESS_START", {
       sourceIp,
       targetSystem,
+      endpointId:
+        resolved.endpointId,
+      labId:
+        resolved.labId,
+      collegeId:
+        resolved.collegeId,
+      instituteId:
+        resolved.instituteId,
       processName: "powershell.exe",
       parentProcess: "winword.exe",
       commandLine: "powershell -enc <redacted>",
@@ -151,6 +264,14 @@ function generateSuspiciousProcessTelemetry() {
     createEvent("PROCESS_START", {
       sourceIp,
       targetSystem,
+      endpointId:
+        resolved.endpointId,
+      labId:
+        resolved.labId,
+      collegeId:
+        resolved.collegeId,
+      instituteId:
+        resolved.instituteId,
       processName: "cmd.exe",
       parentProcess: "powershell.exe",
       commandLine: "cmd.exe /c whoami",
@@ -159,6 +280,14 @@ function generateSuspiciousProcessTelemetry() {
     createEvent("PROCESS_START", {
       sourceIp,
       targetSystem,
+      endpointId:
+        resolved.endpointId,
+      labId:
+        resolved.labId,
+      collegeId:
+        resolved.collegeId,
+      instituteId:
+        resolved.instituteId,
       processName: "net.exe",
       parentProcess: "cmd.exe",
       commandLine: "net user",
@@ -169,6 +298,14 @@ function generateSuspiciousProcessTelemetry() {
     attackId: crypto.randomUUID(),
     sourceIp,
     targetSystem,
+    endpointId:
+      resolved.endpointId,
+    labId:
+      resolved.labId,
+    collegeId:
+      resolved.collegeId,
+    instituteId:
+      resolved.instituteId,
     events,
   };
 }
@@ -176,8 +313,10 @@ function generateSuspiciousProcessTelemetry() {
 /**
  * Default scenario.
  */
-function generateAttackTelemetry() {
-  return generateBruteForceTelemetry();
+function generateAttackTelemetry(context = {}) {
+  return generateBruteForceTelemetry(
+    context
+  );
 }
 
 module.exports = {

@@ -64,6 +64,362 @@ const DEFAULT_ACCESS_POLICY = {
       .filter(Boolean),
 };
 
+const PROPAGATION_SCOPES = {
+  LAB_ONLY:
+    "LAB_ONLY",
+  COLLEGE_WIDE:
+    "COLLEGE_WIDE",
+  ASTU_WIDE:
+    "ASTU_WIDE",
+};
+
+const PROPAGATION_SCOPE_ORDER = [
+  PROPAGATION_SCOPES.LAB_ONLY,
+  PROPAGATION_SCOPES.COLLEGE_WIDE,
+  PROPAGATION_SCOPES.ASTU_WIDE,
+];
+
+const PROPAGATION_APPROVALS = {
+  SOC_COMPLIANCE:
+    "SOC_COMPLIANCE",
+  ASTU_GOVERNANCE:
+    "ASTU_GOVERNANCE",
+};
+
+const PROPAGATION_ROLLOUT_POLICY = {
+  canarySampleSize:
+    Number(
+      process.env.PROPAGATION_CANARY_SAMPLE_SIZE ||
+        3
+    ),
+  falsePositiveRollbackThreshold:
+    Number(
+      process.env.PROPAGATION_FALSE_POSITIVE_ROLLBACK_THRESHOLD ||
+        0.12
+    ),
+  defaultTtlSeconds:
+    Number(
+      process.env.PROPAGATION_DEFAULT_TTL_SECONDS ||
+        86400
+    ),
+};
+
+function createAstuHierarchy() {
+  const hierarchy = {
+    instituteId:
+      "ASTU-NETWORK",
+    instituteName:
+      "ASTU",
+    colleges: [],
+  };
+
+  for (let collegeIndex = 1; collegeIndex <= 8; collegeIndex++) {
+    const collegeId = `COLLEGE-${String(collegeIndex).padStart(2, "0")}`;
+    const college = {
+      collegeId,
+      collegeName:
+        collegeIndex === 1
+          ? "Home College"
+          : `ASTU Affiliated College ${collegeIndex}`,
+      labs: [],
+    };
+
+    for (let labIndex = 1; labIndex <= 5; labIndex++) {
+      const labId = `${collegeId}-LAB-${String(labIndex).padStart(2, "0")}`;
+      const lab = {
+        labId,
+        labName: `Lab ${labIndex}`,
+        endpoints: [],
+      };
+
+      for (let endpointIndex = 1; endpointIndex <= 20; endpointIndex++) {
+        lab.endpoints.push({
+          endpointId: `${labId}-PC-${String(endpointIndex).padStart(2, "0")}`,
+          hostname: `pc-${collegeIndex}-${labIndex}-${endpointIndex}`,
+          os: "Windows",
+        });
+      }
+
+      college.labs.push(lab);
+    }
+
+    hierarchy.colleges.push(college);
+  }
+
+  return hierarchy;
+}
+
+const ASSET_HIERARCHY =
+  createAstuHierarchy();
+
+function buildEndpointLookup(hierarchy) {
+  const lookup = {};
+
+  for (const college of hierarchy.colleges) {
+    for (const lab of college.labs) {
+      for (const endpoint of lab.endpoints) {
+        lookup[endpoint.endpointId] = {
+          instituteId:
+            hierarchy.instituteId,
+          collegeId:
+            college.collegeId,
+          labId:
+            lab.labId,
+          endpointId:
+            endpoint.endpointId,
+          endpointName:
+            endpoint.hostname,
+        };
+      }
+    }
+  }
+
+  return lookup;
+}
+
+const ENDPOINT_LOOKUP =
+  buildEndpointLookup(ASSET_HIERARCHY);
+
+function getDefaultEndpointContext() {
+  const firstCollege =
+    ASSET_HIERARCHY.colleges[0];
+  const firstLab =
+    firstCollege.labs[0];
+  const firstEndpoint =
+    firstLab.endpoints[0];
+
+  return {
+    instituteId:
+      ASSET_HIERARCHY.instituteId,
+    collegeId:
+      firstCollege.collegeId,
+    labId:
+      firstLab.labId,
+    endpointId:
+      firstEndpoint.endpointId,
+    endpointName:
+      firstEndpoint.hostname,
+  };
+}
+
+function resolveEndpointContext(requestBody = {}) {
+  const requestedEndpointId =
+    requestBody.endpointId;
+
+  if (
+    requestedEndpointId &&
+    ENDPOINT_LOOKUP[requestedEndpointId]
+  ) {
+    return ENDPOINT_LOOKUP[requestedEndpointId];
+  }
+
+  const defaultContext =
+    getDefaultEndpointContext();
+
+  const scopedCollegeId =
+    requestBody.collegeId ||
+    defaultContext.collegeId;
+
+  const scopedLabId =
+    requestBody.labId ||
+    defaultContext.labId;
+
+  const scopedCollege =
+    ASSET_HIERARCHY.colleges.find(
+      (college) =>
+        college.collegeId ===
+        scopedCollegeId
+    );
+
+  if (scopedCollege) {
+    const scopedLab =
+      scopedCollege.labs.find(
+        (lab) => lab.labId === scopedLabId
+      );
+    if (
+      scopedLab &&
+      Array.isArray(scopedLab.endpoints) &&
+      scopedLab.endpoints.length > 0
+    ) {
+      const endpoint =
+        scopedLab.endpoints[0];
+      return {
+        instituteId:
+          ASSET_HIERARCHY.instituteId,
+        collegeId:
+          scopedCollege.collegeId,
+        labId:
+          scopedLab.labId,
+        endpointId:
+          endpoint.endpointId,
+        endpointName:
+          endpoint.hostname,
+      };
+    }
+  }
+
+  return defaultContext;
+}
+
+function getTargetsForScope(scope, hierarchyContext) {
+  const targets = [];
+
+  if (!hierarchyContext) {
+    return targets;
+  }
+
+  for (const college of ASSET_HIERARCHY.colleges) {
+    for (const lab of college.labs) {
+      for (const endpoint of lab.endpoints) {
+        const target = {
+          endpointId:
+            endpoint.endpointId,
+          hostname:
+            endpoint.hostname,
+          collegeId:
+            college.collegeId,
+          labId:
+            lab.labId,
+        };
+
+        if (
+          scope ===
+            PROPAGATION_SCOPES.LAB_ONLY &&
+          target.labId === hierarchyContext.labId
+        ) {
+          targets.push(target);
+        } else if (
+          scope ===
+            PROPAGATION_SCOPES.COLLEGE_WIDE &&
+          target.collegeId ===
+            hierarchyContext.collegeId
+        ) {
+          targets.push(target);
+        } else if (
+          scope ===
+          PROPAGATION_SCOPES.ASTU_WIDE
+        ) {
+          targets.push(target);
+        }
+      }
+    }
+  }
+
+  return targets;
+}
+
+function getRuleVersion(incident) {
+  return (
+    incident?.propagationPolicy?.ruleVersion ||
+    1
+  );
+}
+
+function createPropagationPolicy(incident) {
+  return {
+    ruleVersion:
+      getRuleVersion(incident),
+    ruleTtlSeconds:
+      PROPAGATION_ROLLOUT_POLICY.defaultTtlSeconds,
+    canarySampleSize:
+      PROPAGATION_ROLLOUT_POLICY.canarySampleSize,
+    rollbackThreshold:
+      PROPAGATION_ROLLOUT_POLICY.falsePositiveRollbackThreshold,
+    currentScope:
+      "NONE",
+    deployedScopes:
+      [],
+    approvals: {
+      [PROPAGATION_APPROVALS.SOC_COMPLIANCE]: {
+        requiredOrgs: [
+          "Org1MSP",
+          "Org3MSP",
+        ],
+        approvals:
+          [],
+      },
+      [PROPAGATION_APPROVALS.ASTU_GOVERNANCE]: {
+        requiredOrgs: [
+          "Org4MSP",
+        ],
+        approvals:
+          [],
+      },
+    },
+    auditTrail:
+      [],
+    endpointRolloutResults:
+      [],
+  };
+}
+
+function getNextScope(currentScope) {
+  const currentIndex =
+    PROPAGATION_SCOPE_ORDER.indexOf(
+      currentScope
+    );
+  if (currentIndex < 0) {
+    return PROPAGATION_SCOPE_ORDER[0];
+  }
+  if (
+    currentIndex + 1 >=
+    PROPAGATION_SCOPE_ORDER.length
+  ) {
+    return null;
+  }
+  return PROPAGATION_SCOPE_ORDER[currentIndex + 1];
+}
+
+function isApprovalSatisfied(approvalGate) {
+  const approvedOrgs = new Set(
+    approvalGate.approvals.map(
+      (entry) => entry.orgMSP
+    )
+  );
+  return approvalGate.requiredOrgs.every(
+    (org) => approvedOrgs.has(org)
+  );
+}
+
+function getRequiredApproval(scope) {
+  if (
+    scope ===
+    PROPAGATION_SCOPES.COLLEGE_WIDE
+  ) {
+    return PROPAGATION_APPROVALS.SOC_COMPLIANCE;
+  }
+  if (
+    scope ===
+    PROPAGATION_SCOPES.ASTU_WIDE
+  ) {
+    return PROPAGATION_APPROVALS.ASTU_GOVERNANCE;
+  }
+  return null;
+}
+
+function normalizeScope(scopeInput, incident) {
+  const input = String(scopeInput || "")
+    .trim()
+    .toUpperCase();
+  if (
+    input &&
+    PROPAGATION_SCOPE_ORDER.includes(input)
+  ) {
+    return input;
+  }
+
+  if (!incident?.propagationPolicy) {
+    return PROPAGATION_SCOPES.LAB_ONLY;
+  }
+
+  return (
+    getNextScope(
+      incident.propagationPolicy.currentScope
+    ) ||
+    PROPAGATION_SCOPES.ASTU_WIDE
+  );
+}
+
 app.use(cors());
 app.use(express.json());
 
@@ -122,6 +478,18 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+app.get("/api/assets/hierarchy", (req, res) => {
+  res.json({
+    success: true,
+    hierarchy:
+      ASSET_HIERARCHY,
+    scopes:
+      PROPAGATION_SCOPE_ORDER,
+    approvalGates:
+      PROPAGATION_APPROVALS,
+  });
+});
+
 /*
 |--------------------------------------------------------------------------
 | Simulate Attack
@@ -157,22 +525,32 @@ app.get("/api/health", (req, res) => {
 */
 
 app.post("/api/attack/simulate", async (req, res) => {
-  function generateSelectedTelemetry(scenario) {
+  function generateSelectedTelemetry(scenario, context) {
   switch (scenario) {
     case "bruteforce":
-      return generateBruteForceTelemetry();
+      return generateBruteForceTelemetry(
+        context
+      );
 
     case "scan":
-      return generateNetworkScanTelemetry();
+      return generateNetworkScanTelemetry(
+        context
+      );
 
     case "dos":
-      return generateDosTelemetry();
+      return generateDosTelemetry(
+        context
+      );
 
     case "process":
-      return generateSuspiciousProcessTelemetry();
+      return generateSuspiciousProcessTelemetry(
+        context
+      );
 
     default:
-      return generateAttackTelemetry();
+      return generateAttackTelemetry(
+        context
+      );
   }
 }
   try {
@@ -183,7 +561,14 @@ app.post("/api/attack/simulate", async (req, res) => {
     */
 
     const scenario = req.body.scenario || "bruteforce";
-    const attack = generateSelectedTelemetry(scenario);
+    const endpointContext =
+      resolveEndpointContext(
+        req.body || {}
+      );
+    const attack = generateSelectedTelemetry(
+      scenario,
+      endpointContext
+    );
 
     /*
     |--------------------------------------------------------------------------
@@ -299,7 +684,20 @@ app.post("/api/attack/simulate", async (req, res) => {
         agentResult.technique.name,
 
       asset:
-        attack.targetSystem,
+        endpointContext.endpointId,
+
+      hierarchy: {
+        endpointId:
+          endpointContext.endpointId,
+        endpointName:
+          endpointContext.endpointName,
+        labId:
+          endpointContext.labId,
+        collegeId:
+          endpointContext.collegeId,
+        instituteId:
+          endpointContext.instituteId,
+      },
 
       observedAt:
         incidentTimestamp,
@@ -326,7 +724,21 @@ app.post("/api/attack/simulate", async (req, res) => {
           attack.sourceIp,
 
         targetSystem:
-          attack.targetSystem,
+          endpointContext.endpointId,
+
+        hierarchy:
+          {
+            endpointId:
+              endpointContext.endpointId,
+            endpointName:
+              endpointContext.endpointName,
+            labId:
+              endpointContext.labId,
+            collegeId:
+              endpointContext.collegeId,
+            instituteId:
+              endpointContext.instituteId,
+          },
 
         failedAttempts:
           attack.events.filter(
@@ -456,6 +868,9 @@ app.post("/api/attack/simulate", async (req, res) => {
       triaged:
         false,
 
+      propagationPolicy:
+        createPropagationPolicy(),
+
       /*
       |--------------------------------------------------------------------------
       | Internal timestamp
@@ -496,7 +911,7 @@ app.post("/api/attack/simulate", async (req, res) => {
               attack.sourceIp,
 
             targetSystem:
-              attack.targetSystem,
+              endpointContext.endpointId,
 
             riskScore:
               agentResult.riskScore,
@@ -1302,6 +1717,145 @@ app.post(
 
 /*
 |--------------------------------------------------------------------------
+| Propagation Approvals
+|--------------------------------------------------------------------------
+|
+| POST /api/incidents/:incidentId/propagation/approve
+|
+|--------------------------------------------------------------------------
+*/
+
+app.post(
+  "/api/incidents/:incidentId/propagation/approve",
+  async (req, res) => {
+    try {
+      const { incidentId } =
+        req.params;
+
+      const {
+        approvalGate,
+        orgMSP = "Org1MSP",
+        role = "admin",
+        approver = "automated-workflow",
+      } = req.body || {};
+
+      if (
+        !Object.values(PROPAGATION_APPROVALS).includes(
+          approvalGate
+        )
+      ) {
+        return res.status(400).json({
+          success: false,
+          error:
+            "Invalid approval gate. Use SOC_COMPLIANCE or ASTU_GOVERNANCE.",
+        });
+      }
+
+      const incident =
+        incidents.find(
+          (item) =>
+            item.id === incidentId
+        );
+
+      if (!incident) {
+        return res.status(404).json({
+          success: false,
+          error:
+            "Incident not found",
+        });
+      }
+
+      incident.propagationPolicy =
+        incident.propagationPolicy ||
+        createPropagationPolicy(incident);
+
+      const gateState =
+        incident.propagationPolicy
+          .approvals[approvalGate];
+
+      const alreadyApproved =
+        gateState.approvals.some(
+          (entry) =>
+            entry.orgMSP === orgMSP
+        );
+
+      if (alreadyApproved) {
+        return res.status(409).json({
+          success: false,
+          error: `${orgMSP} has already approved ${approvalGate}.`,
+        });
+      }
+
+      const approvedAt =
+        new Date().toISOString();
+
+      gateState.approvals.push({
+        orgMSP,
+        role,
+        approver,
+        approvedAt,
+      });
+
+      let auditTxId = null;
+
+      if (incident.fabric?.recorded) {
+        const statusAudit =
+          await updateDefenseStatus(
+            incident.fabric.incidentId,
+            `APPROVED_${approvalGate}_${orgMSP}`
+          );
+        auditTxId =
+          statusAudit.transactionId;
+
+        await updateDefenseStatus(
+          incident.fabric.incidentId,
+          "READY_FOR_PROPAGATION"
+        );
+      }
+
+      const gateApproved =
+        isApprovalSatisfied(gateState);
+
+      incident.propagationPolicy.auditTrail.push(
+        {
+          type:
+            "APPROVAL_RECORDED",
+          approvalGate,
+          orgMSP,
+          role,
+          approver,
+          approvedAt,
+          gateApproved,
+          fabricTransactionId:
+            auditTxId,
+        }
+      );
+
+      saveIncidents();
+
+      return res.json({
+        success: true,
+        incidentId,
+        approvalGate,
+        gateApproved,
+        gateState,
+      });
+    } catch (error) {
+      console.error(
+        "Propagation approval error:",
+        error
+      );
+      return res.status(500).json({
+        success: false,
+        error:
+          error.message,
+      });
+    }
+  }
+);
+
+/*
+|--------------------------------------------------------------------------
 | Defense Propagation
 |--------------------------------------------------------------------------
 |
@@ -1314,16 +1868,8 @@ app.post(
   "/api/incidents/:incidentId/propagate",
   async (req, res) => {
     try {
-      const {
-        incidentId,
-      } = req.params;
-
-      /*
-      |--------------------------------------------------------------------------
-      | Find incident
-      |--------------------------------------------------------------------------
-      */
-
+      const { incidentId } =
+        req.params;
       const incident =
         incidents.find(
           (item) =>
@@ -1353,12 +1899,6 @@ app.post(
         });
       }
 
-      /*
-      |--------------------------------------------------------------------------
-      | Read authoritative defense record from Fabric
-      |--------------------------------------------------------------------------
-      */
-
       const fabricRecord =
         await getDefense(
           fabricIncidentId
@@ -1371,12 +1911,6 @@ app.post(
             "Defense record not found on Hyperledger Fabric",
         });
       }
-
-      /*
-      |--------------------------------------------------------------------------
-      | Propagation is allowed only after validation
-      |--------------------------------------------------------------------------
-      */
 
       if (
         fabricRecord.validationStatus !==
@@ -1393,15 +1927,11 @@ app.post(
         });
       }
 
-      /*
-      |--------------------------------------------------------------------------
-      | Propagation is allowed only after Fabric lifecycle approval
-      |--------------------------------------------------------------------------
-      */
-
       if (
         fabricRecord.lifecycleStatus !==
-        "READY_FOR_PROPAGATION"
+          "READY_FOR_PROPAGATION" &&
+        fabricRecord.lifecycleStatus !==
+          "PROPAGATED"
       ) {
         return res.status(409).json({
           success: false,
@@ -1414,90 +1944,303 @@ app.post(
         });
       }
 
-      /*
-      |--------------------------------------------------------------------------
-      | Controlled propagation simulation
-      |--------------------------------------------------------------------------
-      |
-      | In a production deployment this stage would call
-      | an enforcement mechanism such as a firewall,
-      | IDS/IPS, endpoint security platform, etc.
-      |
-      | For this MVP we only record that the generated
-      | defense rule was successfully propagated.
-      |
-      |--------------------------------------------------------------------------
-      */
+      incident.propagationPolicy =
+        incident.propagationPolicy ||
+        createPropagationPolicy(incident);
+
+      const targetScope =
+        normalizeScope(
+          req.body?.scope,
+          incident
+        );
+
+      if (!targetScope) {
+        return res.status(409).json({
+          success: false,
+          error:
+            "No additional propagation scope is available.",
+        });
+      }
+
+      const requiredApprovalGate =
+        getRequiredApproval(
+          targetScope
+        );
+
+      if (requiredApprovalGate) {
+        const gateState =
+          incident.propagationPolicy
+            .approvals[
+            requiredApprovalGate
+          ];
+        if (
+          !gateState ||
+          !isApprovalSatisfied(
+            gateState
+          )
+        ) {
+          return res.status(409).json({
+            success: false,
+            error:
+              `Propagation to ${targetScope} requires ${requiredApprovalGate} approval.`,
+            requiredApprovalGate,
+            gateState,
+          });
+        }
+      }
+
+      const hierarchyContext =
+        incident.hierarchy ||
+        resolveEndpointContext({
+          endpointId:
+            incident.asset,
+        });
+
+      const targets =
+        getTargetsForScope(
+          targetScope,
+          hierarchyContext
+        );
+
+      if (!targets.length) {
+        return res.status(404).json({
+          success: false,
+          error:
+            "No endpoints matched the requested scope.",
+          targetScope,
+        });
+      }
+
+      const canaryCount = Math.min(
+        incident.propagationPolicy
+          .canarySampleSize || 1,
+        targets.length
+      );
+
+      const canaryTargets =
+        targets.slice(0, canaryCount);
+
+      const now =
+        new Date().toISOString();
+
+      const falsePositiveRate =
+        Number(
+          req.body?.falsePositiveRate ??
+            0.01
+        );
+      const rollbackTriggered =
+        Boolean(req.body?.forceRollback) ||
+        falsePositiveRate >
+          incident
+            .propagationPolicy
+            .rollbackThreshold;
+
+      const endpointRollout = {
+        scope:
+          targetScope,
+        status:
+          rollbackTriggered
+            ? "ROLLED_BACK"
+            : "DEPLOYED",
+        simulated:
+          true,
+        canaryTargets:
+          canaryTargets.map(
+            (item) =>
+              item.endpointId
+          ),
+        targetCount:
+          targets.length,
+        rolledOutAt:
+          now,
+        falsePositiveRate,
+        rollbackThreshold:
+          incident
+            .propagationPolicy
+            .rollbackThreshold,
+        fanOut:
+          {
+            orchestrators: [
+              "WAZUH_MANAGER",
+              "SURICATA_MANAGER",
+              "SNORT_MANAGER",
+              "SYSMON_COLLECTOR",
+            ],
+            rolloutMode:
+              rollbackTriggered
+                ? "CANARY_ROLLBACK"
+                : "CANARY_THEN_FULL",
+          },
+        endpointResults:
+          targets.map(
+            (endpoint, index) => ({
+              endpointId:
+                endpoint.endpointId,
+              collegeId:
+                endpoint.collegeId,
+              labId:
+                endpoint.labId,
+              stage:
+                index < canaryCount
+                  ? "CANARY"
+                  : "FULL",
+              status:
+                rollbackTriggered &&
+                index >= canaryCount
+                  ? "SKIPPED_DUE_TO_ROLLBACK"
+                  : "UPDATED",
+              reason:
+                rollbackTriggered &&
+                index >= canaryCount
+                  ? "False positive threshold exceeded"
+                  : "Rule distributed by central IDS orchestrators",
+            })
+          ),
+      };
+
+      incident.propagationPolicy
+        .endpointRolloutResults.push(
+          endpointRollout
+        );
+
+      incident.propagationPolicy.currentScope =
+        targetScope;
+
+      if (!rollbackTriggered) {
+        incident.propagationPolicy.deployedScopes =
+          Array.from(
+            new Set([
+              ...incident.propagationPolicy
+                .deployedScopes,
+              targetScope,
+            ])
+          );
+      }
+
+      const scopeAuditStatus =
+        rollbackTriggered
+          ? `ROLLBACK_${targetScope}`
+          : `PROPAGATED_${targetScope}`;
+
+      const scopeAuditResult =
+        await updateDefenseStatus(
+          fabricIncidentId,
+          scopeAuditStatus
+        );
+
+      let lifecycleResult = null;
+      if (
+        !rollbackTriggered &&
+        targetScope ===
+          PROPAGATION_SCOPES.ASTU_WIDE
+      ) {
+        lifecycleResult =
+          await updateDefenseStatus(
+            fabricIncidentId,
+            "PROPAGATED"
+          );
+      } else {
+        lifecycleResult =
+          await updateDefenseStatus(
+            fabricIncidentId,
+            "READY_FOR_PROPAGATION"
+          );
+      }
+
+      const auditEvent = {
+        type:
+          "SCOPE_PROPAGATION",
+        scope:
+          targetScope,
+        status:
+          endpointRollout.status,
+        recordedAt:
+          now,
+        scopeAuditTxId:
+          scopeAuditResult.transactionId,
+        lifecycleTxId:
+          lifecycleResult.transactionId,
+        targetCount:
+          targets.length,
+        canaryCount,
+        falsePositiveRate,
+      };
+
+      incident.propagationPolicy.auditTrail.push(
+        auditEvent
+      );
+
+      incident.fabric.lifecycleStatus =
+        lifecycleResult.status;
+
+      incident.fabric.transactionIds =
+        incident.fabric.transactionIds || {};
+
+      incident.fabric.transactionIds[
+        `scope_${targetScope}_${Date.now()}`
+      ] =
+        scopeAuditResult.transactionId;
+
+      incident.fabric.transactionIds[
+        `lifecycle_${targetScope}_${Date.now()}`
+      ] =
+        lifecycleResult.transactionId;
 
       const propagation = {
         status:
-          "PROPAGATED",
-
+          endpointRollout.status,
+        scope:
+          targetScope,
         simulated:
           true,
-
         propagatedAt:
-          new Date().toISOString(),
-
+          now,
         ruleId:
           fabricRecord
             .defenseRule
             ?.ruleId || null,
-
         ruleType:
           fabricRecord
             .defenseRule
             ?.type || null,
-
         action:
           fabricRecord
             .defenseRule
             ?.action || null,
+        ruleVersion:
+          incident.propagationPolicy
+            .ruleVersion,
+        ttlSeconds:
+          incident.propagationPolicy
+            .ruleTtlSeconds,
+        targetCount:
+          endpointRollout.targetCount,
+        canaryCount,
+        rollbackTriggered,
+        falsePositiveRate,
       };
-
-      /*
-      |--------------------------------------------------------------------------
-      | Record lifecycle transition on Fabric
-      |--------------------------------------------------------------------------
-      */
-
-      await updateDefenseStatus(
-        fabricIncidentId,
-        "PROPAGATED"
-      );
-
-      /*
-      |--------------------------------------------------------------------------
-      | Keep local incident state synchronized
-      |--------------------------------------------------------------------------
-      */
 
       incident.propagation =
         propagation;
 
-      incident.fabric.lifecycleStatus =
-        "PROPAGATED";
       saveIncidents();
-
-      /*
-      |--------------------------------------------------------------------------
-      | Response
-      |--------------------------------------------------------------------------
-      */
 
       res.json({
         success: true,
-
         incidentId: fabricIncidentId,
-
         message:
-          "Defense rule successfully propagated.",
-
+          rollbackTriggered
+            ? "Canary rollback triggered; full rollout halted."
+            : "Defense rule successfully propagated for requested scope.",
         propagation,
-
+        propagationPolicy:
+          incident.propagationPolicy,
+        endpointRollout,
         fabric: {
           lifecycleStatus:
-            "PROPAGATED",
+            incident.fabric.lifecycleStatus,
+          transactionIds:
+            incident.fabric.transactionIds,
         },
       });
     } catch (error) {
