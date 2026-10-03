@@ -1,5 +1,255 @@
 [
   {
+    "id": "INC-1791021713112",
+    "title": "Network Service Scanning",
+    "source": "192.168.1.60",
+    "severity": "High",
+    "tactic": "Network Service Scanning",
+    "asset": "SYSTEM-A",
+    "observedAt": "2026-10-03T10:01:53.112Z",
+    "status": "Open",
+    "attack": {
+      "id": "37ba1d4c-1714-4b80-b7ed-8f0fa7958783",
+      "type": "Network Service Scanning",
+      "technique": {
+        "id": "T1046",
+        "name": "Network Service Scanning"
+      },
+      "sourceIp": "192.168.1.60",
+      "targetSystem": "SYSTEM-A",
+      "events": [
+        {
+          "eventId": "eb6bf4e5-12c0-4a9c-9c62-da53d7f505d2",
+          "timestamp": "2026-10-03T09:59:06.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 21,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "0876992c-686b-4755-b2b5-27e056f55065",
+          "timestamp": "2026-10-03T09:59:07.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 22,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "c81c9e4f-11b1-4bbe-a282-ec6cd2c3bc77",
+          "timestamp": "2026-10-03T09:59:08.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 23,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "5d141e04-949c-401e-85a2-e0952f822910",
+          "timestamp": "2026-10-03T09:59:09.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 25,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "0e2a88a6-365d-4b82-bc09-1b14f6745d47",
+          "timestamp": "2026-10-03T09:59:10.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 53,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "f652e36d-45ca-4638-ac15-c5b32ceee874",
+          "timestamp": "2026-10-03T09:59:11.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 80,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "8ae3a337-4e2a-4d52-b845-6ed7d2623ed3",
+          "timestamp": "2026-10-03T09:59:12.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 110,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "58572639-04b8-4d94-bf51-3c39b6d6bc93",
+          "timestamp": "2026-10-03T09:59:13.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 135,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "89e5f67a-c803-48c6-9afd-b2b48b7a2eea",
+          "timestamp": "2026-10-03T09:59:14.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 139,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "7092fe28-ddc6-4244-8e92-64ae23e40d56",
+          "timestamp": "2026-10-03T09:59:15.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 143,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "d2a3fe70-b66e-4679-8cf1-98c78f634eb3",
+          "timestamp": "2026-10-03T09:59:16.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 443,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "d7f5228e-9b96-40f6-8822-5c8e3a14de4e",
+          "timestamp": "2026-10-03T09:59:17.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 445,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "5d62e2f2-4921-404e-984e-a6bb992cb857",
+          "timestamp": "2026-10-03T09:59:18.617Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 3306,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "bdd2b0d4-6e06-442e-97b7-5d36eaba9090",
+          "timestamp": "2026-10-03T09:59:19.618Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 3389,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        },
+        {
+          "eventId": "f4fdecd2-42fc-4829-896b-c292957857bd",
+          "timestamp": "2026-10-03T09:59:20.618Z",
+          "type": "CONNECTION_ATTEMPT",
+          "sourceIp": "192.168.1.60",
+          "targetSystem": "SYSTEM-A",
+          "destinationPort": 8080,
+          "protocol": "TCP",
+          "connectionStatus": "REFUSED"
+        }
+      ]
+    },
+    "analysis": {
+      "confidence": 0.93,
+      "riskScore": 75,
+      "reason": "The detected behavior of a single source probing many destination ports is consistent with network service scanning, as observed in the telemetry.",
+      "evidence": [
+        "15 connection attempts detected",
+        "15 distinct destination ports targeted",
+        "Source IP: 192.168.1.60",
+        "Multiple services were probed within a short period"
+      ],
+      "reasoning": [
+        "Network Service Scanning (T1046) involves probing multiple services on different targets."
+      ],
+      "agent": {
+        "provider": "ollama",
+        "model": "qwen2.5:1.5b-instruct-q4_K_M",
+        "stages": [
+          "THREAT_INVESTIGATION",
+          "ADAPTIVE_DEFENSE"
+        ],
+        "defenseApproved": true
+      },
+      "agentReview": {
+        "approved": true,
+        "risk": "LOW",
+        "issues": [],
+        "recommendations": [
+          "Validate the generated defense rule before production deployment."
+        ],
+        "reason": "The model response was normalized into the canonical defense-rule schema."
+      }
+    },
+    "defenseRule": {
+      "ruleId": "AG-IDS-T1046-1791021713111",
+      "ruleName": "Adaptive Defense Rule for Network Service Scanning",
+      "attack": {
+        "type": "Network Service Scanning",
+        "mitreTechnique": "T1046"
+      },
+      "type": "network_scan_rate_limit",
+      "condition": {
+        "sourceIp": "192.168.1.60",
+        "targetSystem": "SYSTEM-A",
+        "connectionAttempts": 10,
+        "windowSeconds": 15
+      },
+      "action": {
+        "type": "Block"
+      },
+      "explanation": "This adaptive defense rule is designed to detect and prevent network service scanning activities.",
+      "severity": "HIGH",
+      "reason": "This adaptive defense rule is designed to detect and prevent network service scanning activities."
+    },
+    "validation": {
+      "passed": true,
+      "status": "VALIDATED",
+      "checks": {
+        "syntax": true,
+        "relevance": true,
+        "safety": true,
+        "conflict": true
+      },
+      "errors": []
+    },
+    "fabric": {
+      "incidentId": "INC-1791021713112",
+      "recorded": true,
+      "network": "mychannel",
+      "chaincode": "defenseRegistry",
+      "evidenceHash": "e0990dc42b1ad3386caa97655e659019fbbcc4902f0875f9e1640bf4b16d6aa1",
+      "validationStatus": "VALIDATED",
+      "lifecycleStatus": "READY_FOR_PROPAGATION",
+      "error": null
+    },
+    "state": "OPEN",
+    "acknowledged": false,
+    "triaged": false,
+    "timestamp": "2026-10-03T10:01:53.112Z"
+  },
+  {
     "id": "INC-1791020756467",
     "title": "Command and Scripting Interpreter",
     "source": "192.168.1.80",

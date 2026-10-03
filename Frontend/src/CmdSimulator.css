@@ -1,0 +1,81 @@
+.cmd-window {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #cccccc;
+}
+
+.cmd-header {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 4px 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  user-select: none;
+}
+
+.cmd-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.cmd-header span:nth-child(2) {
+  flex-grow: 1;
+}
+
+.cmd-controls {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.cmd-body {
+  padding: 8px;
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.cmd-line {
+  min-height: 19px;
+  word-break: break-all;
+}
+
+.cmd-input-line {
+  display: flex;
+  align-items: center;
+}
+
+.cmd-prompt {
+  margin-right: 8px;
+  white-space: pre;
+}
+
+.cmd-input {
+  background: transparent;
+  border: none;
+  color: #cccccc;
+  font-family: inherit;
+  font-size: inherit;
+  flex-grow: 1;
+  outline: none;
+  caret-color: #cccccc;
+}
+
+@keyframes blink-cmd {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cmd-blink {
+  animation: blink-cmd 1s step-end infinite;
+}
